@@ -1,0 +1,130 @@
+# Node.js
+ui/node_modules/
+ui/.next/
+ui/.env.local
+ui/.env.development.local
+ui/.env.test.local
+ui/.env.production.local
+ui/npm-debug.log*
+ui/yarn-debug.log*
+ui/yarn-error.log*
+
+apps/*/node_modules/
+apps/*/.next/
+apps/*/.env.local
+apps/*/.env.development.local
+apps/*/.env.test.local
+apps/*/.env.production.local
+apps/*/npm-debug.log*
+apps/*/yarn-debug.log*
+apps/*/yarn-error.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+
+# IDE / agent tooling
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# exclude semantic database files
+extensions/brain/*.db
+
+# Docker volumes (data will persist in named volumes)
+postgres_data/
+ollama_data/
+postgres_dev_data/
+ollama_dev_data/
+postgres_minimal_data/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Model files (will be downloaded by Ollama)
+*.gguf
+*.bin
+
+# Input samples (except the sample we're including)
+input_samples/*
+!input_samples/sample_company_doc.md
+!input_samples/.gitkeep
+
+# Environment files
+.env*
+!.env.example
+
+# Docker compose override (dev only — see docker-compose.override.yml.example)
+docker-compose.override.yml
+
+# Runtime ops (audit logs, proposals)
+ops/
+
+# caches
+__pycache__/
+*.pyc
+.huggingface/
+.cache/
+
+# local artifacts
+brainfoundry/audit.jsonl
+data/
+
+# Federation peer registry — per-deployment pinned trust anchors.
+# The .example template is tracked; the real file is never committed.
+api/identity/known_peers.toml
+
+# Personalized persona (Track J1) — holds the brain's real identity.
+# The tracked file is api/brain_persona.template.md (blank); the personalized
+# copy lives only on the brain and is rsync-excluded, so a `git pull` can
+# never overwrite a brain's identity.
+api/brain_persona.local.md
+# Pre-J1 single-file persona — migrated into .local.md on api startup, then
+# removed. Ignored so a brain that has not yet restarted still gets a clean
+# `git status` after the J2 retrofit.
+api/brain_persona.md
+
+# Rollback point — the commit running before the last update. Written by
+# update_brain.sh, read by revert_brain.sh / the console Revert button.
+# Per-brain runtime state, never committed.
+.update-prev-commit
+
+# Pre-update snapshots written by backup_brain.sh when invoked from the
+# in-container Update path. Lives inside the bind-mounted brain dir so it
+# survives the rebuild (the parent /home/hbar/brain-backups is not mounted
+# into the container). Gitignored so it never blocks a pull / dirties status.
+.brain-backups/
+
+# One CLI scoping file (CC hands), per box, never committed
+.onerc

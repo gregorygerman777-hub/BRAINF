@@ -1,0 +1,255 @@
+services:
+
+  # Ollama — local model inference
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "127.0.0.1:11435:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - llm-network
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1
+    restart: unless-stopped
+
+  # Brain API
+  api:
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --proxy-headers --no-access-log
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+      args:
+        BRAIN_GIT_COMMIT: ${BRAIN_GIT_COMMIT:-unknown}
+        BRAIN_BUILD_TIME: ${BRAIN_BUILD_TIME:-unknown}
+    ports:
+      - "127.0.0.1:8010:8000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-llm_db}
+      - OLLAMA_URL=${OLLAMA_URL:-http://ollama:11434}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-llama3.2:3b}
+      - SEMANTIC_DB_PATH=/app/extensions/brain/semantic.db
+      - NODEOS_URL=http://nodeos:8001
+      - NODEOS_INTERNAL_KEY=${NODEOS_INTERNAL_KEY}
+      - BRAIN_API_KEY=${BRAIN_API_KEY}
+      - BRAIN_IDENTITY_SECRET=${BRAIN_IDENTITY_SECRET}
+      - BRAIN_ENV=${BRAIN_ENV:-dev}
+      - KERNEL_RATE_LIMIT_MAX=30
+      - KERNEL_RATE_LIMIT_WINDOW=60
+      - PUBLIC_RATE_LIMIT_MAX=${PUBLIC_RATE_LIMIT_MAX:-10}
+      - PUBLIC_RATE_LIMIT_WINDOW=${PUBLIC_RATE_LIMIT_WINDOW:-60}
+      # TRUST_PROXY_HEADERS: when true, public-surface rate limiting trusts the
+      # LAST hop of X-Forwarded-For (set ONLY behind a trusted proxy like Caddy
+      # that appends the real client IP). Default false = ignore the header and
+      # use the transport peer, so a directly-reachable brain can't be spoofed.
+      - TRUST_PROXY_HEADERS=${TRUST_PROXY_HEADERS:-false}
+      - REDIS_URL=redis://redis:6379/0
+      - DEV_ENABLE_MEMORY_APPEND=0
+      - BRAIN_ID=${BRAIN_ID:-my-brain-01}
+      - BRAIN_NAME=${BRAIN_NAME:-My Brain}
+      - BRAIN_SYMBOL=${BRAIN_SYMBOL:-⊕}
+      - BRAIN_OWNER=${BRAIN_OWNER}
+      - BRAIN_PRIVATE_KEY=${BRAIN_PRIVATE_KEY}
+      - BRAIN_PUBLIC_KEY=${BRAIN_PUBLIC_KEY}
+      # Packs to pre-install on first run (comma list; base is always included).
+      # The provisioner writes this from the packs field of POST /api/provision.
+      - BRAIN_PACKS=${BRAIN_PACKS:-base}
+      # CC tab (0.11.0): opt-in chat surface backed by a reasoner on the box.
+      # Off unless the operator sets BRAIN_CC_ENABLED=true in .env AND runs the
+      # cc-bridge on the host (operator runbook). The api only lists the tab.
+      - BRAIN_CC_ENABLED=${BRAIN_CC_ENABLED:-}
+      - DEFAULT_MODEL=${DEFAULT_MODEL:-llama3.2:3b}
+      - PUBLIC_CHAT_MODEL=${PUBLIC_CHAT_MODEL:-llama3.2:1b}
+      # Org-brain public-chat tuning. PUBLIC_CHAT_LAYERS comma-separated
+      # metadata.layer values to retrieve from (default "public" for nous;
+      # org brains like hbar.university set this to "semantic" per their
+      # corpus convention). PUBLIC_CHAT_CITE_SOURCES=true makes the prompt
+      # surface document_name + ask the model to cite by name (default
+      # false = index-only [Document N] labels, nous behavior).
+      # PUBLIC_PERSONA_PATH points to the persona file the public-chat
+      # endpoint loads at startup (default = nous demo persona).
+      - PUBLIC_CHAT_LAYERS=${PUBLIC_CHAT_LAYERS:-public}
+      - PUBLIC_CHAT_CITE_SOURCES=${PUBLIC_CHAT_CITE_SOURCES:-false}
+      - PUBLIC_PERSONA_PATH=${PUBLIC_PERSONA_PATH:-/app/api/brain_persona_nous.md}
+      # PUBLIC_CHAT_SCOPE: AND metadata.scope=X onto the RAG retrieval so
+      # internal-tagged chunks never leak through a layer-only filter.
+      # Recommended "public" for any org brain. Empty = no scope filter.
+      - PUBLIC_CHAT_SCOPE=${PUBLIC_CHAT_SCOPE:-}
+      # PUBLIC_CHAT_DAILY_MAX: brain-wide daily cap on /v1/public/chat
+      # calls. Counts ALL IPs combined; bypasses-by-IP-rotation are
+      # caught here. Default 2000 (safe non-zero ceiling). Set to 0 to
+      # explicitly opt into unlimited (local-model brains only). Returns
+      # 503 with retry-to-UTC-midnight when exceeded.
+      - PUBLIC_CHAT_DAILY_MAX=${PUBLIC_CHAT_DAILY_MAX:-2000}
+      # TURNSTILE_SECRET_KEY: when set, /v1/public/chat requires a
+      # Cloudflare Turnstile token verified against siteverify.
+      # Stops bot loops. Unset = no Turnstile gate (default, nous behavior).
+      - TURNSTILE_SECRET_KEY=${TURNSTILE_SECRET_KEY:-}
+      - CHUNK_SIZE=${CHUNK_SIZE:-750}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-150}
+      - TZ=${TZ:-UTC}
+      - CORS_ORIGINS=${CORS_ORIGINS:-}
+      - RAG_TIER1=${RAG_TIER1:-identity}
+      - RAG_TIER2A=${RAG_TIER2A:-thinking}
+      - RAG_TIER2B=${RAG_TIER2B:-projects}
+      - RAG_TIER2C=${RAG_TIER2C:-writing}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY:-}
+      - XAI_API_KEY=${XAI_API_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY:-}
+      # First-run "become-you" onboarding trial reasoner. UNSET TRIAL_REASONER_API_KEY
+      # = whole onboarding surface inert (no opener, no panel, normal chat) — safe
+      # for every already-provisioned brain. The empty default ${NAME:-} sets an
+      # empty string in-container; the code treats empty as "use default" (so the
+      # caps fall back to their documented values when not overridden in .env).
+      - TRIAL_REASONER_API_KEY=${TRIAL_REASONER_API_KEY:-}
+      - TRIAL_REASONER_MODEL=${TRIAL_REASONER_MODEL:-}
+      - TRIAL_SESSION_TOKEN_CAP=${TRIAL_SESSION_TOKEN_CAP:-}
+      - TRIAL_IP_DAILY_TOKEN_CAP=${TRIAL_IP_DAILY_TOKEN_CAP:-}
+      - TRIAL_IP_DAILY_SESSION_CAP=${TRIAL_IP_DAILY_SESSION_CAP:-}
+      - TRIAL_GLOBAL_DAILY_TOKEN_CAP=${TRIAL_GLOBAL_DAILY_TOKEN_CAP:-}
+      - TRIAL_AUDIT_DIR=${TRIAL_AUDIT_DIR:-}
+      - TRIAL_BUDGET_PATH=${TRIAL_BUDGET_PATH:-}
+      - ONBOARDING_CORPUS_THRESHOLD=${ONBOARDING_CORPUS_THRESHOLD:-}
+      # Host path of this brain repo, used only by the opt-in /admin/update tab.
+      # Set BRAIN_HOST_DIR in .env to the absolute host path where you cloned
+      # this repo (e.g. /opt/brainfoundry/brain, /srv/brain, or ~/my-brain).
+      # The default below is a neutral placeholder; /admin/update is off unless
+      # you enable it via docker-compose.override.yml, so most installs never
+      # need to touch this.
+      - BRAIN_HOST_DIR=${BRAIN_HOST_DIR:-/opt/brainfoundry/brain}
+    depends_on:
+      - postgres
+      - nodeos
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 2s
+      retries: 6
+      start_period: 10s
+    volumes:
+      - ./input_samples:/app/input_samples:ro
+      - ./extensions/brain:/app/extensions/brain:rw
+      - ./brain-apps:/app/brain-apps:rw
+      - ./prepared_docs:/app/prepared_docs:rw
+      - api_data:/app/data
+      - api_runtime:/app/runtime
+      # NOTE: the in-console "Update" tab (/admin/update) is OFF by default.
+      # Enabling it requires mounting /var/run/docker.sock into this container,
+      # which grants root-equivalent access to the host — an opt-in, not a
+      # default. To enable, copy docker-compose.override.yml.example to
+      # docker-compose.override.yml (it also carries the same-path brain-repo
+      # mount /admin/update needs). Without it, /admin/update returns a clear
+      # "not configured" 503 and you update via `scripts/update_brain.sh` over
+      # SSH. See docs/DEPLOYMENT.md § "Enabling in-console updates".
+      #
+      # docker-compose.override.yml is also where dev live-reload of ./api lives.
+    networks:
+      - llm-network
+    restart: unless-stopped
+
+  # BrainKernel — governance kernel
+  nodeos:
+    build:
+      context: ./nodeos
+      dockerfile: Dockerfile
+    environment:
+      - NODEOS_SIGNING_SECRET=${NODEOS_SIGNING_SECRET}
+      - NODEOS_HMAC_SECRET=${NODEOS_SIGNING_SECRET}
+      - NODEOS_INTERNAL_KEY=${NODEOS_INTERNAL_KEY}
+      - NODEOS_DB_PATH=/data/nodeos.db
+      - NODEOS_PUSH_BRANCH_ALLOWLIST=${NODEOS_PUSH_BRANCH_ALLOWLIST:-}
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      - BRAIN_ENV=${BRAIN_ENV:-dev}
+    volumes:
+      - nodeos_data:/data
+    networks:
+      - llm-network
+    ports:
+      - "127.0.0.1:8001:8001"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8001/health').read()\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # Console UI
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:3010:3000"
+    environment:
+      API_INTERNAL_URL: "http://api:8000"
+      NODEOS_INTERNAL_URL: "http://nodeos:8001"
+      NODEOS_INTERNAL_KEY: "${NODEOS_INTERNAL_KEY}"
+      BRAIN_API_KEY: "${BRAIN_API_KEY}"
+      BRAIN_ID: "${BRAIN_ID:-my-brain-01}"
+      NEXT_PUBLIC_BRAIN_NAME: "${BRAIN_NAME:-My Brain}"
+    depends_on:
+      - api
+      - nodeos
+    networks:
+      - llm-network
+    restart: unless-stopped
+
+  # Public chat surface — backs nous.brainfoundry.ai (bare domain).
+  # No API key, no operator console nav. Calls the api service's
+  # /v1/public/chat endpoint via the docker network. Per-IP rate limit
+  # is enforced server-side on api, not here.
+  public-chat:
+    build:
+      context: ./apps/public-chat
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:3020:3000"
+    environment:
+      API_INTERNAL_URL: "http://api:8000"
+    depends_on:
+      - api
+    networks:
+      - llm-network
+    restart: unless-stopped
+
+  # PostgreSQL with pgvector
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "127.0.0.1:54332:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-llm_db}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./vector-db:/docker-entrypoint-initdb.d:Z
+    networks:
+      - llm-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - llm-network
+    restart: unless-stopped
+
+networks:
+  llm-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  ollama_data:
+  nodeos_data:
+  redis_data:
+  api_data:
+  api_runtime:
