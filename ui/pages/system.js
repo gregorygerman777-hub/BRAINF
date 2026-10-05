@@ -45,7 +45,7 @@ export default function System() {
   const warnings = [...((api && api.warnings) || []), ...((host && host.warnings) || [])]
   return (
     <>
-      <Head><title>System · BrainFoundry</title></Head>
+      <Head><title>System · BRAINF</title></Head>
       <div style={{ maxWidth: '980px', margin: '0 auto', padding: '18px 20px 60px', color: T.ink, fontFamily: 'var(--font-display, serif)' }}>
         <p style={{ ...mono, fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: T.gold, margin: '0 0 6px 0' }}>System · the box in numbers</p>
         <p style={{ fontSize: '13px', color: T.dim, margin: '0 0 16px 0' }}>

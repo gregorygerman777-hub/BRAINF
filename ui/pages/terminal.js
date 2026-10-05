@@ -12,7 +12,7 @@ export default function Terminal() {
   }, [])
   return (
     <>
-      <Head><title>Terminal · BrainFoundry</title></Head>
+      <Head><title>Terminal · BRAINF</title></Head>
       <div style={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - var(--nav-h, 52px))', minHeight: '480px', color: 'var(--text)' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '14px', padding: '10px 18px', borderBottom: '1px solid var(--line, #2a2621)' }}>
           <span style={{ fontFamily: 'var(--font-mono, monospace)', fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--accent, #c9a96e)' }}>Terminal · your server</span>

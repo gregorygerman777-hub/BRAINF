@@ -133,7 +133,7 @@ export default function Nav() {
       zIndex: 100,
     }}>
       <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px', flexShrink: 0 }}>
-        <span style={{ fontSize: '18px', color: 'var(--accent)', fontWeight: 400, lineHeight: 1 }}>{process.env.NEXT_PUBLIC_BRAIN_SYMBOL || 'ℏ'}</span>
+        <img src="/icon.svg" alt="BRAINF logo" width={26} height={26} />
         <span className="bf-brand-name" style={{
           fontFamily: 'var(--font-display)',
           fontWeight: 600,
@@ -141,7 +141,7 @@ export default function Nav() {
           color: 'var(--text)',
           letterSpacing: '0.01em',
         }}>
-          {menuTitle || process.env.NEXT_PUBLIC_BRAIN_NAME || 'brain'}
+          {menuTitle || process.env.NEXT_PUBLIC_BRAIN_NAME || 'BRAINF'}
         </span>
       </Link>
       {ccHome ? (

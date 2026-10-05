@@ -206,7 +206,7 @@ export default function Graph() {
 
   return (
     <>
-      <Head><title>Memory graph · BrainFoundry</title></Head>
+      <Head><title>Memory graph · BRAINF</title></Head>
       <div style={{ display: 'flex', height: 'calc(100vh - var(--nav-h, 52px))', minHeight: '480px', fontFamily: 'var(--font-display, serif)', color: 'var(--text)' }}>
         <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: '10px 16px 6px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>

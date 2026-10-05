@@ -524,7 +524,7 @@ function ComingSoon({ icon, name, detail }) {
 export default function Integrations() {
   return (
     <>
-      <Head><title>Integrations · BrainFoundry</title></Head>
+      <Head><title>Integrations · BRAINF</title></Head>
       <div style={{ padding: '40px 32px', maxWidth: '780px', margin: '0 auto', fontFamily: 'Lora, ui-serif, serif' }}>
         <h1 style={{ fontSize: 26, color: '#f0e8da', margin: '0 0 6px 0' }}>Integrations</h1>
         <p style={{ color: '#9a8c7a', fontSize: 14, lineHeight: 1.6, margin: '0 0 26px 0' }}>

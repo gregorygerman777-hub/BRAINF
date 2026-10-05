@@ -97,7 +97,7 @@ export default function Files() {
   const crumbs = data && data.path ? data.path.split('/').filter(Boolean) : []
   return (
     <>
-      <Head><title>Files · BrainFoundry</title></Head>
+      <Head><title>Files · BRAINF</title></Head>
       <div style={{ display: 'flex', height: 'calc(100vh - var(--nav-h, 52px))', minHeight: '480px', color: T.ink, fontFamily: 'var(--font-display, serif)' }}>
         <div style={{ width: sel ? '42%' : '100%', minWidth: '280px', borderRight: sel ? `1px solid ${T.line}` : 0, display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: '10px 16px', borderBottom: `1px solid ${T.line}`, display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'baseline' }}>

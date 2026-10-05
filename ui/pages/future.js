@@ -70,7 +70,7 @@ function FeatureRow({ status, title, detail }) {
 export default function Future() {
   return (
     <>
-      <Head><title>Future · BrainFoundry</title></Head>
+      <Head><title>Future · BRAINF</title></Head>
       <div style={{ padding: '40px 32px', maxWidth: '900px', margin: '0 auto', fontFamily: 'Lora, ui-serif, serif' }}>
 
         <div style={{ marginBottom: '12px' }}>

@@ -52,7 +52,7 @@ export default function Tasks() {
 
   return (
     <>
-      <Head><title>Tasks · BrainFoundry</title></Head>
+      <Head><title>Tasks · BRAINF</title></Head>
       <div style={{ padding: '40px 32px', maxWidth: '720px', margin: '0 auto', fontFamily: 'Lora, ui-serif, serif' }}>
         <h1 style={{ fontSize: 26, color: '#f0e8da', margin: '0 0 6px 0' }}>Tasks</h1>
         <p style={{ color: '#9a8c7a', fontSize: 14, lineHeight: 1.6, margin: '0 0 22px 0' }}>

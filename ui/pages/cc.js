@@ -360,7 +360,7 @@ function CC() {
   const [busySince, setBusySince] = useState(null)
   const [tick, setTick] = useState(0)
   useEffect(() => { if (!busy) { setBusySince(null); return } setBusySince(Date.now()); const t = setInterval(() => setTick(x => x + 1), 1000); return () => clearInterval(t) }, [busy])
-  useEffect(() => { try { document.title = (busy ? '● ' : '') + 'CC · BrainFoundry' } catch {} }, [busy])
+  useEffect(() => { try { document.title = (busy ? '● ' : '') + 'CC · BRAINF' } catch {} }, [busy])
   const fmtElapsed = (ms) => { const s = Math.max(0, Math.round(ms / 1000)); return s < 60 ? `${s} s` : `${Math.floor(s / 60)} min ${String(s % 60).padStart(2, '0')} s` }
   // The brain speaks (2026-09-23): when the bridge has a voice, answers are read aloud as
   // they finish while this is on. Remembered per browser. One player at a time.
@@ -1221,7 +1221,7 @@ function CC() {
 
   return (
     <>
-      <Head><title>CC · BrainFoundry</title></Head>
+      <Head><title>CC · BRAINF</title></Head>
       <div style={{ display: 'flex', alignItems: 'stretch', minHeight: 'calc(100vh - 60px)' }}>
       <div style={{ padding: '28px 32px 20px', maxWidth: pane ? 'none' : width, margin: pane ? 0 : '0 auto', flex: 1, minWidth: 0,
                     fontFamily, display: 'flex', flexDirection: 'column', height: 'calc(100vh - 60px)', boxSizing: 'border-box' }}>

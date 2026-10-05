@@ -155,7 +155,7 @@ export default function Trace() {
 
   return (
     <>
-      <Head><title>Trace · BrainFoundry</title></Head>
+      <Head><title>Trace · BRAINF</title></Head>
       <div style={{
         padding: '40px 32px',
         maxWidth: '960px',

@@ -45,7 +45,7 @@ export default function Guide() {
   const done = rows.filter(r => r.done).length
   return (
     <>
-      <Head><title>Guide · BrainFoundry</title></Head>
+      <Head><title>Guide · BRAINF</title></Head>
       <div style={{ maxWidth: '860px', margin: '0 auto', padding: '18px 20px 60px', color: T.ink, fontFamily: 'var(--font-display, serif)' }}>
         <p style={{ ...mono, fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: T.gold, margin: '0 0 6px 0' }}>Guide · how this brain works</p>
         <div style={{ display: 'flex', gap: '14px', margin: '0 0 18px 0', borderBottom: `1px solid ${T.line}` }}>
