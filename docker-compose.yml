@@ -45,9 +45,9 @@ services:
       - TRUST_PROXY_HEADERS=${TRUST_PROXY_HEADERS:-false}
       - REDIS_URL=redis://redis:6379/0
       - DEV_ENABLE_MEMORY_APPEND=0
-      - BRAIN_ID=${BRAIN_ID:-my-brain-01}
-      - BRAIN_NAME=${BRAIN_NAME:-My Brain}
-      - BRAIN_SYMBOL=${BRAIN_SYMBOL:-⊕}
+      - BRAIN_ID=${BRAIN_ID:-brainf-01}
+      - BRAIN_NAME=${BRAIN_NAME:-BRAINF}
+      - BRAIN_SYMBOL=${BRAIN_SYMBOL:-🧠}
       - BRAIN_OWNER=${BRAIN_OWNER}
       - BRAIN_PRIVATE_KEY=${BRAIN_PRIVATE_KEY}
       - BRAIN_PUBLIC_KEY=${BRAIN_PUBLIC_KEY}
@@ -190,8 +190,8 @@ services:
       NODEOS_INTERNAL_URL: "http://nodeos:8001"
       NODEOS_INTERNAL_KEY: "${NODEOS_INTERNAL_KEY}"
       BRAIN_API_KEY: "${BRAIN_API_KEY}"
-      BRAIN_ID: "${BRAIN_ID:-my-brain-01}"
-      NEXT_PUBLIC_BRAIN_NAME: "${BRAIN_NAME:-My Brain}"
+      BRAIN_ID: "${BRAIN_ID:-brainf-01}"
+      NEXT_PUBLIC_BRAIN_NAME: "${BRAIN_NAME:-BRAINF}"
     depends_on:
       - api
       - nodeos
