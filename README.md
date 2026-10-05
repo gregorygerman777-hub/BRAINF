@@ -1,6 +1,6 @@
  your personal AI workspace
 
-Keep your conversations, documents, and AI tools together in a workspace you control. BRAINF combines private chat, searchable document memory, and your choice of local or connected models. Run it on your own machine and shape it around your work.
+Keep your conversations, documents, and AI tools together in a workspace you control.combines private chat, searchable document memory, and your choice of local or connected models. Run it on your own machine and shape it around your work.
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.9.2-informational.svg)](VERSION)
