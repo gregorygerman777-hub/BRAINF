@@ -1,4 +1,6 @@
-# BRAINF — your self-hosted AI brain
+# BRAINF — your personal AI workspace
+
+Keep your conversations, documents, and AI tools together in a workspace you control. BRAINF combines private chat, searchable document memory, and your choice of local or connected models. Run it on your own machine and shape it around your work.
 
 BRAINF is a customized distribution of [BrainFoundry](https://github.com/hbar-systems/brainfoundry-nous) by hbar-systems, based on upstream commit `2f7dca488b577ed814f26cd48a79a76d6315e7cb`. It retains the upstream implementation, AGPL v3 license, and notices. This version changes the default display name and console logo.
 
