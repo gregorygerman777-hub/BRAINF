@@ -1,3 +1,9 @@
+# BRAINF — your self-hosted AI brain
+
+BRAINF is a customized distribution of [BrainFoundry](https://github.com/hbar-systems/brainfoundry-nous) by hbar-systems, based on upstream commit `2f7dca488b577ed814f26cd48a79a76d6315e7cb`. It retains the upstream implementation, AGPL v3 license, and notices. This version changes the default display name and console logo.
+
+Clone this version with `git clone https://github.com/gregorygerman777-hub/BRAINF.git my-brain`. The upstream documentation follows; its upstream project and service links refer to the original authors.
+
 # BrainFoundry — private, self-hosted AI with real memory
 
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
