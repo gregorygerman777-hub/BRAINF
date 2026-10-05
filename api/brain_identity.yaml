@@ -1,0 +1,7 @@
+brain_id: "${BRAIN_ID}"
+display_name: "${BRAIN_NAME}"
+domain: authority
+role: operator_node
+model: null
+tags: [authority, nodeos, operator]
+public_key: "${BRAIN_PUBLIC_KEY}"
