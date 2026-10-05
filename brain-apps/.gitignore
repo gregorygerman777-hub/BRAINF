@@ -1,0 +1,20 @@
+# Installed app clones — landed at install time, not part of the template.
+*/
+
+# installed.json is per-brain runtime state. _load_installed() creates it on
+# first request. Tracking it in git meant every deploy of the template repo
+# overwrote a brain's populated registry — i.e. "apps gone". Do not track it.
+installed.json
+
+# Track the README and this gitignore itself.
+!README.md
+!.gitignore
+
+# Track the default-shelf manifest — template config, NOT runtime state. It is
+# the source of truth for which apps a fresh brain pre-installs (read-only at
+# runtime; seed_default_apps() never writes it).
+!defaults.json
+
+# Track the pack definitions — template config, read-only at runtime.
+!packs/
+!packs/*.json
