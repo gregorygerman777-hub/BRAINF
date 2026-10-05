@@ -12,59 +12,8 @@ your own API keys), and keeps everything on *your* box — no vendor sees your
 data, nothing phones home. It's for anyone who wants a private, personal AI with
 real memory instead of a chat box that forgets.
 
-Governance, an append-only audit log, and optional federation with other brains
-are built in too — but you don't need any of that to run it. Start with the
-Quickstart; the deeper model is in [Trust model](#trust-model-v09--read-this-before-you-run-it-in-production) below.
 
-> **The names, once:** **BrainFoundry** is the product · a single install is **a
-> brain** · **nous** is our live public brain — a real running node you can talk
-> to, not a canned demo · **BrainKernel** is the governance kernel (called
-> `nodeos` in the containers and env vars) · **BrainFoundryOS** is the federation
-> protocol brains speak to each other. More in [docs/NAMING.md](docs/NAMING.md).
-> Part of **hbar.systems — personalized intelligence**.
 
-> **ℏ, not HBAR:** the name derives from **ℏ** (the reduced Planck constant) —
-> unrelated to Hedera or the HBAR cryptocurrency. More:
-> [hbar.systems/hbar](https://hbar.systems/hbar).
-
-<!-- TODO(demo-gif) operator: record nous (https://nous.brainfoundry.ai) or a
-     fresh local `docker compose up` — NEVER the private operator brain (real
-     memory, not reproducible). Silent 8-15s loop, <5 MB, cropped tight to the
-     chat, dark theme, no private info in frame. Content = ONE idea: prove it's
-     a real running brain + one memory/continuity moment (e.g. "keep answers
-     terse & technical" → a later answer visibly obeys). Save to
-     docs/assets/demo.gif, then replace the line below with:
-       ![BrainFoundry demo](docs/assets/demo.gif) -->
-_See a brain live right now: **[nous.brainfoundry.ai](https://nous.brainfoundry.ai)** — a demo GIF lands here shortly._
-
-## Quickstart
-
-One command on a fresh Linux box with Docker. It generates dev secrets into
-`.env`, builds the stack, pulls the local model, and waits until the brain
-answers — no cloud key required:
-
-```bash
-git clone https://github.com/hbar-systems/brainfoundry-nous.git my-brain
-cd my-brain
-./scripts/start_docker.sh
-```
-
-Then open the console at `http://localhost:3010` and start chatting — it replies
-from a local Ollama model with no API key set. Ingest your own documents with
-`python scripts/ingest_folder.py /path/to/docs`.
-
-> Prefer to configure by hand first? Copy `.env.example` to `.env` and set the
-> four secrets (`openssl rand -hex 32` each → `BRAIN_API_KEY`,
-> `BRAIN_IDENTITY_SECRET`, `NODEOS_SIGNING_SECRET`, `NODEOS_INTERNAL_KEY`), then
-> run the same script — it leaves an existing `.env` untouched. Full walk-through
-> (including the persona file that makes the brain *yours*) is in
-> [Spin up your own brain](#spin-up-your-own-brain) below.
-
-**Links:** [brainfoundry.ai](https://brainfoundry.ai) ·
-[hbar.systems](https://hbar.systems) ·
-live public brain: **[nous.brainfoundry.ai](https://nous.brainfoundry.ai)** — a real running node you can talk to, not a canned demo.
-
----
 
 ## What this is
 
