@@ -1,0 +1,188 @@
+# Deployment Guide
+
+This guide covers deploying brainfoundry-nous on a VPS or dedicated server for personal production use.
+
+## Prerequisites
+
+- Docker and Docker Compose v2+
+- At least 4 GB RAM (8 GB recommended for larger local models)
+- 20+ GB disk space (Ollama models are large)
+- A domain name with DNS pointing to your server (optional but recommended)
+
+## Quick Deploy
+
+```bash
+git clone https://github.com/hbar-systems/brainfoundry-nous.git my-brain
+cd my-brain
+cp .env.example .env
+nano .env          # fill in all required fields
+docker compose up -d --build
+```
+
+## Environment Configuration
+
+All configuration lives in `.env`. The key fields:
+
+| Variable | Required | Description |
+|---|---|---|
+| `BRAIN_ID` | Yes | Unique identifier for this node (e.g. `my-brain-01`) |
+| `BRAIN_NAME` | Yes | Display name |
+| `BRAIN_OWNER` | Yes | Your name |
+| `BRAIN_API_KEY` | Yes | API key for all authenticated endpoints |
+| `BRAIN_IDENTITY_SECRET` | Yes | Secret for signing identity tokens |
+| `NODEOS_SIGNING_SECRET` | Yes | Secret for BrainKernel governance kernel |
+| `BRAIN_PRIVATE_KEY` | Yes | ED25519 private key for federation |
+| `BRAIN_PUBLIC_KEY` | Yes | ED25519 public key (published via /identity) |
+| `POSTGRES_PASSWORD` | Yes | Change from default before production |
+| `BRAIN_ENV` | Yes | Set to `prod` to enforce secret validation on startup |
+
+### Generating secrets
+
+```bash
+# API key and signing secrets
+openssl rand -hex 32   # run 3 times, use for BRAIN_API_KEY, BRAIN_IDENTITY_SECRET, NODEOS_SIGNING_SECRET
+
+# ED25519 federation keypair
+python scripts/generate_keypair.py
+```
+
+## Port Layout
+
+| Port | Service | Binding |
+|---|---|---|
+| `3010` | Console UI | `0.0.0.0` |
+| `8010` | Brain API | `0.0.0.0` |
+| `127.0.0.1:8001` | BrainKernel | localhost only |
+| `127.0.0.1:54332` | PostgreSQL | localhost only |
+| `127.0.0.1:11435` | Ollama | localhost only |
+
+**Port 3010 (Console UI) proxies the API server-side using `BRAIN_API_KEY`. Anyone who can reach port 3010 can use the brain.** Protect it with a firewall rule, VPN, or Tailscale — do not expose it to the public internet without access control.
+
+**Port 8010 (API) is protected by `BRAIN_API_KEY`.** Place it behind a reverse proxy (nginx/Caddy) with TLS before exposing it.
+
+## Reverse Proxy (nginx example)
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name brain.yourdomain.com;
+
+    ssl_certificate     /etc/letsencrypt/live/brain.yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/brain.yourdomain.com/privkey.pem;
+
+    location / {
+        proxy_pass http://127.0.0.1:3010;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location /api/ {
+        proxy_pass http://127.0.0.1:8010/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+## Setting BRAIN_ENV=prod
+
+When `BRAIN_ENV=prod`, the API refuses to start if:
+- `BRAIN_API_KEY` is missing
+- `BRAIN_IDENTITY_SECRET` is missing or set to the dev default
+- `DEV_ENABLE_MEMORY_APPEND` is set
+
+This is a safety net. Always use `prod` in production.
+
+## Pulling a Local Model
+
+```bash
+docker compose exec ollama ollama pull llama3.2:3b
+```
+
+Set `OLLAMA_MODEL=llama3.2:3b` in `.env` and restart the API container.
+
+## Updating
+
+```bash
+sudo chown -R $USER:$USER ~/brain 2>/dev/null   # see note below
+git pull origin main
+docker compose up -d --build
+```
+
+**Why the `chown` first.** The api container runs as root and bind-mounts the
+repo (`BRAIN_HOST_DIR`); its git ops (the Update-tab "latest on origin" fetch,
+`/admin/update`) and a past root checkout can leave `.git` and working-tree files
+root-owned. A host `git pull` then fails *silently* (`cannot open .git/FETCH_HEAD:
+Permission denied` / `unable to unlink old …`) and `docker compose up --build`
+quietly rebuilds the **old** code. The chown-first is harmless when ownership is
+already correct and guarantees the pull lands. The brain also **self-heals** at
+boot — `repair_repo_ownership()` (`api/git_ownership.py`) re-owns the repo to the
+host operator on every container start — but that runs *after* your pull, so lead
+with the chown.
+
+**Persona / settings survive rebuilds.** The personalized persona, API keys,
+integration credentials, and tasks live in the `api_runtime` named volume
+(`/app/runtime`), not in the image — `docker compose up --build` preserves them.
+
+### Enabling in-console updates (`/admin/update`)
+
+The SSH flow above is the recommended way to update. There is also an optional
+"Update" tab in the console that runs the same `docker compose up -d --build`
+from *inside* the api container. **It is OFF by default** because it requires
+mounting `/var/run/docker.sock` into the api container, which grants that
+container root-equivalent control of the host Docker daemon.
+
+If you accept that trade (in the single-tenant brain model the owner already has
+host root via SSH), enable it by copying the override example and uncommenting
+the two `/admin/update` mounts:
+
+```bash
+cp docker-compose.override.yml.example docker-compose.override.yml
+# edit it: uncomment the docker.sock + ${BRAIN_HOST_DIR} mounts under services.api.volumes
+# set BRAIN_HOST_DIR in .env to this repo's absolute host path if it isn't /home/hbar/brain
+docker compose up -d
+```
+
+**Reasoner spoke.** Set `OLLAMA_SPOKE_URL` (in `docker-compose.override.yml` under the api's
+environment, e.g. `http://100.x.y.z:11434`, a machine of yours on your tailnet running Ollama)
+and local inference goes there while it answers; when it does not (the laptop sleeps) the
+brain uses its own Ollama at `OLLAMA_URL` again, and comes back when the spoke does. The
+probe is one `GET /api/tags` every 30 seconds at most; `GET /health` shows `box`, `spoke`
+and `spoke_up`. The spoke must serve the model the brain is set to. (Added 2026-09-23.)
+
+The same spoke can carry the embeddings: when it serves `bge-large` (Ollama's copy of
+BAAI/bge-large-en-v1.5, the brain's default embedding model, 1024 dimensions, nothing
+re-indexed), every embedding for ingest and search is computed there; when it does not answer
+or does not list the model, in-process as before. `EMBED_SPOKE=0` turns that off with one
+variable; `EMBED_SPOKE_MODEL` names another model only if `EMBEDDING_MODEL_NAME` changed
+with it. `GET /admin/embed-spoke-check` embeds one sentence both ways and reports the cosine
+(expect above 0.99) and the norms; `GET /health` shows `services.embeddings.spoke`.
+
+**Chunk-level memory updates (2026-09-27).** Re-ingesting a document name the brain already
+holds keeps the chunks whose text did not change (their `created_at` is refreshed so a later
+"retire chunks before" leaves them), embeds only the new chunks, and deletes the chunks that
+disappeared. Nothing to configure; the done event carries `chunks_reused` and `chunks_retired`.
+
+With the mounts present you can also let the brain update itself: the switch "Keep this
+brain updated" on the Update page runs the same script once a day at the hour you pick
+(UTC), only when origin/main moved, with the pre-update backup the script always takes.
+The last run and its result show next to the switch; the log is `/app/runtime/auto-update.log`
+inside the api container. Off by default. (Added 2026-09-23.)
+
+Until those mounts are present, `POST /admin/update` returns a structured `503`
+(`preflight_error` from `_update_preflight()`) explaining what's missing, and the
+console degrades gracefully — SSH-driven updates keep working.
+
+## Troubleshooting
+
+**"I deployed but nothing changed."** Almost always the root-owned-repo issue
+above — your `git pull` silently failed. Run the `chown` line and pull again;
+confirm with `git rev-parse --short HEAD` matching `origin/main`.
+
+**API container fails to start**: Check `docker compose logs api`. Most common cause is a missing required secret in `.env`.
+
+**NodeOS unreachable**: The API fails closed — all inference and state mutations are blocked until NodeOS is healthy. Check `docker compose logs nodeos`.
+
+**Embedding model not loaded**: The model loads on first use. Check `/ready` endpoint. The `/health` endpoint shows model status.
+
+**Database errors**: Check that PostgreSQL is running (`docker compose ps postgres`) and that `POSTGRES_PASSWORD` matches the running container. If recreating from scratch, bring the volume down first: `docker compose down -v`.
