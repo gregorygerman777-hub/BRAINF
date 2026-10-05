@@ -1,4 +1,4 @@
-# BRAINF — your personal AI workspace
+ your personal AI workspace
 
 Keep your conversations, documents, and AI tools together in a workspace you control. BRAINF combines private chat, searchable document memory, and your choice of local or connected models. Run it on your own machine and shape it around your work.
 
@@ -19,18 +19,11 @@ real memory instead of a chat box that forgets.
 
 A full-stack AI brain you run on your own server. It connects to the models you
 choose, stores your knowledge, and answers with memory of it. You own it. Nobody
-else has access. (Product name: **BrainFoundry**; the governance kernel is
+else has access. (Product name Brain; the governance kernel is
 **BrainKernel**, named `nodeos` in the container and env vars — see
 [docs/NAMING.md](docs/NAMING.md).)
 
 ### Trust model (v0.9) — read this before you run it in production
-
-This repo is the **reference implementation**, not a polished appliance.
-BrainKernel is the governance kernel (named `nodeos` in the container and env vars).
-BrainFoundryOS is the overall platform and federation protocol; each node runs a
-BrainKernel (internally `nodeos`) that handles persona, memory routing, and decision-making.
-The guarantees it gives you today are:
-
 - **You are the only tenant.** Designed for single-owner, self-hosted use. Not
   multi-tenant. Not a hosted service.
 - **BrainKernel gates the chat loop with caller-bound permits.** Every
@@ -314,7 +307,7 @@ verify you.
 
 This means three populations run this repo side-by-side and all three work:
 
-1. **BrainFoundry-provisioned customers** — default, track `main`.
+1. *BRAIN-provisioned customers** — default, track `main`.
 2. **Self-hosters** — `git clone` + `docker compose up` on any VPS.
 3. **Forkers** — diverge however you want.
 
@@ -326,9 +319,7 @@ an upgrade note. See `ROADMAP.md` for what's coming and what's deferred.
 ## Get your brain built for you
 
 **White-glove personal service:**
-Email [hello@hbar.systems](mailto:hello@hbar.systems) — subject line `brainfoundry`.
-BrainFoundry reviews your request and crafts your brain personally.
-
+Email Joshwolf772@gmail.com subject line `BRAIN`.
 ---
 
 ## Federation trust — substrate floor (Layer 1)
@@ -337,7 +328,7 @@ A federating peer cannot accept assertions from this brain until the brain's
 substrate-depth signal clears the configured thresholds. The substrate floor
 is a federation-membership precondition — it does not gate ingestion, only
 cross-brain trust. Design rationale:
-[discussions/2026-05-01_federation-trust-mechanisms.md](https://github.com/hbar-systems/hbar.world/blob/main/discussions/2026-05-01_federation-trust-mechanisms.md).
+[discussions/2026-05-01_federation-trust-mechanisms.md]
 
 **Endpoints:**
 
