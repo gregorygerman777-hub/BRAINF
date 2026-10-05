@@ -2,12 +2,6 @@
 
 Keep your conversations, documents, and AI tools together in a workspace you control. BRAINF combines private chat, searchable document memory, and your choice of local or connected models. Run it on your own machine and shape it around your work.
 
-BRAINF is a customized distribution of [BrainFoundry](https://github.com/hbar-systems/brainfoundry-nous) by hbar-systems, based on upstream commit `2f7dca488b577ed814f26cd48a79a76d6315e7cb`. It retains the upstream implementation, AGPL v3 license, and notices. This version changes the default display name and console logo.
-
-Clone this version with `git clone https://github.com/gregorygerman777-hub/BRAINF.git my-brain`. The upstream documentation follows; its upstream project and service links refer to the original authors.
-
-# BrainFoundry — private, self-hosted AI with real memory
-
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Version](https://img.shields.io/badge/version-0.9.2-informational.svg)](VERSION)
 [![Stack](https://img.shields.io/badge/stack-FastAPI%20%2B%20Next.js%20%2B%20pgvector-success.svg)](#stack)
