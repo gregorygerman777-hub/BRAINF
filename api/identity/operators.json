@@ -1,0 +1,10 @@
+{
+  "operators": [
+    {
+      "operator_id": "OWNER-0001",
+      "trust_tier": "root",
+      "display_name": "${BRAIN_OWNER}",
+      "active": true
+    }
+  ]
+}
