@@ -11,7 +11,7 @@
     { "id": "focus-pad",     "repo_url": "https://github.com/gregorygerman777-hub/brain-app-focus-pad",     "ref": "HEAD" },
     { "id": "poker-log",     "repo_url": "https://github.com/gregorygerman777-hub/brain-app-poker-log",     "ref": "HEAD" },
     { "id": "study-room",    "repo_url": "https://github.com/gregorygerman777-hub/brain-app-study-room",    "ref": "HEAD" },
-    { "id": "ask",           "repo_url": "https://github.com/gregorygerman777-hub/brain-app-ask",           "ref": "v0.1.0" }
+    { "id": "ask",           "repo_url": "https://github.com/gregorygerman777-hub/brain-app-ask",           "ref": "v0.1.1" }
   ],
   "tools": [],
   "md": [],

@@ -72,7 +72,7 @@ def test_shipped_base_pack_is_valid_and_is_defaults_plus_ask():
     assert base_ids[len(default_ids):] == ["ask"]
     ask = next(a for a in base["apps"] if a["id"] == "ask")
     assert ask["repo_url"] == "https://github.com/gregorygerman777-hub/brain-app-ask"
-    assert ask["ref"] == "v0.1.0"
+    assert ask["ref"] == "v0.1.1"
     assert base["requires"] == []
     assert base["compute"] is None
 
