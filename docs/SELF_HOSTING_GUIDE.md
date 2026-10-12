@@ -66,7 +66,7 @@ Only ports 8010, 3010, and optionally Ollama (if you want to call it directly) n
 ### Step 1 — Clone
 
 ```bash
-git clone https://github.com/hbar-systems/brainfoundry-nous.git my-brain
+git clone https://github.com/gregorygerman777-hub/BRAINF.git my-brain
 cd my-brain
 ```
 

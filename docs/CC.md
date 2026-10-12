@@ -8,7 +8,7 @@ It is off by default. A brain shows the CC tab only when its owner switches it o
 
 ## What you need
 
-- A running brain, this version or later, that you can reach over SSH as the brain user (the provisioner's default user is `hbar`; it has sudo).
+- A running brain, this version or later, that you can reach over SSH as the brain user (the provisioner's default user is `brain`; it has sudo).
 - One of: a Claude subscription, or an Anthropic Console account billed per use.
 - Ten minutes.
 

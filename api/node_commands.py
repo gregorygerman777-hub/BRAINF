@@ -1,5 +1,5 @@
 """
-api/hbar_commands.py — Brain custom command handlers
+api/node_commands.py — Brain custom command handlers
 
 Called by /v1/brain/command for commands specific to the brain layer:
 remember, recall, forget, memories, context.*, peers.*, model.*, audit, policy, ingest, think
@@ -86,7 +86,7 @@ def _db():
     return psycopg2.connect(DATABASE_URL)
 
 
-async def handle_hbar_command(
+async def handle_node_command(
     *,
     command: str,
     payload: dict,

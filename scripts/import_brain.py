@@ -25,7 +25,7 @@ USAGE  (run on your laptop)
     <ssh_host>  target brain host
     --yes       skip the interactive destructive-restore confirmation
 
-  SSH as `hbar` with $HOME/.ssh/id_ed25519_brainfoundry_automation
+  SSH as `brain` with $HOME/.ssh/id_ed25519_brainfoundry_automation
   (override with $BRAINFOUNDRY_KEY).
 """
 from __future__ import annotations
@@ -39,7 +39,7 @@ import tarfile
 import tempfile
 from pathlib import Path
 
-BRAIN_DIR = "/home/hbar/brain"
+BRAIN_DIR = "/home/brain/brain"
 COMPOSE = f"docker compose -f {BRAIN_DIR}/docker-compose.yml"
 SELF_IN_CONTAINER = f"{BRAIN_DIR}/scripts/import_brain.py"
 ARCHIVE_FORMAT_PREFIX = "brainfoundry-brain-export/"
@@ -170,7 +170,7 @@ def worker_load_pg(table: str, embedding_mode: str) -> int:
 def ssh_base(host: str) -> list:
     key = os.environ.get("BRAINFOUNDRY_KEY",
                          str(Path.home() / ".ssh" / "id_ed25519_brainfoundry_automation"))
-    return ["ssh", "-i", key, "-o", "StrictHostKeyChecking=accept-new", f"hbar@{host}"]
+    return ["ssh", "-i", key, "-o", "StrictHostKeyChecking=accept-new", f"brain@{host}"]
 
 
 def scp_base() -> list:
@@ -296,7 +296,7 @@ def restore(host: str, archive: Path, assume_yes: bool) -> int:
         if mp.is_file():
             print("  loading memory_proposals...")
             subprocess.run(
-                scp_base() + [str(mp), f"hbar@{host}:/tmp/_brainimport_mp.jsonl"],
+                scp_base() + [str(mp), f"brain@{host}:/tmp/_brainimport_mp.jsonl"],
                 check=True, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
             ssh_run(host, f"cd {BRAIN_DIR} && {COMPOSE} cp "
                           f"/tmp/_brainimport_mp.jsonl nodeos:/tmp/_brainimport_mp.jsonl")
@@ -334,7 +334,7 @@ def restore(host: str, archive: Path, assume_yes: bool) -> int:
         ssh_run(host, f"cd {BRAIN_DIR} && {COMPOSE} restart api")
 
     print(f"\nimport_brain: done — {host} restored from {archive.name}")
-    print(f"  verify:  ssh hbar@{host} \"cd {BRAIN_DIR} && {COMPOSE} "
+    print(f"  verify:  ssh brain@{host} \"cd {BRAIN_DIR} && {COMPOSE} "
           f"exec -T api python {SELF_IN_CONTAINER} --probe\"")
     return 0
 

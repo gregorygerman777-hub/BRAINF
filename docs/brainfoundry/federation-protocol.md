@@ -18,7 +18,7 @@ Federation is two sovereign brain nodes voluntarily interacting — sharing cont
 
 ## Why HMAC-SHA256 is not enough
 
-The intra-brain permit system (loop permits, operator assertions) uses HMAC-SHA256 with a shared secret (`HBAR_IDENTITY_SECRET`). This works when the same brain issues and verifies its own tokens — both sides know the secret.
+The intra-brain permit system (loop permits, operator assertions) uses HMAC-SHA256 with a shared secret (`BRAIN_IDENTITY_SECRET`). This works when the same brain issues and verifies its own tokens — both sides know the secret.
 
 For federation, Brain B needs to verify a token issued by Brain A. With symmetric signing, that would require Brain B to know Brain A's secret. Sharing secrets between sovereign nodes breaks the sovereignty model entirely — you are trusting the other node's operational security as much as your own.
 
@@ -78,7 +78,7 @@ base64url(header).base64url(claims).base64url(signature)
 ```json
 {
   "alg": "EdDSA",
-  "typ": "HBAR_FED_ASSERTION",
+  "typ": "BRAIN_FED_ASSERTION",
   "v": 1
 }
 ```
@@ -200,7 +200,7 @@ Federation assertions answer "is this really Brain A talking?" — before the re
 - [ ] Both `/identity` endpoints return `public_key` field
 
 **Test sequence:**
-1. Brain A issues a `HBAR_FED_ASSERTION` with `sub: "handshake_ping"`
+1. Brain A issues a `BRAIN_FED_ASSERTION` with `sub: "handshake_ping"`
 2. Brain B fetches Brain A's `/identity`, verifies the token
 3. Brain B issues a response assertion back to Brain A
 4. Brain A verifies Brain B's response

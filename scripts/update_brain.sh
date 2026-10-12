@@ -15,7 +15,7 @@
 
 set -e
 
-BRAIN_DIR="${BRAIN_DIR:-/home/hbar/brain}"
+BRAIN_DIR="${BRAIN_DIR:-/home/brain/brain}"
 # Inside the api container (the Update tab's path) the api listens on 8000 and the
 # host's 8010 does not exist, so the old default failed every time the script lived
 # long enough to check (found 2026-09-16, understood 2026-09-22: a false "unhealthy").
@@ -108,7 +108,7 @@ echo ""
 # minutes (scripts/restore_brain.sh) instead of a brain's memory. Snapshots go
 # UNDER the bind-mounted brain dir (.brain-backups/) so they survive the rebuild
 # even when this script runs inside the api container — the host-side
-# /home/hbar/brain-backups is not mounted in. Best-effort by default: a backup
+# /home/brain/brain-backups is not mounted in. Best-effort by default: a backup
 # failure warns loudly but does not block the update (volumes persist across an
 # ff-only pull + rebuild, and the rollback commit + revert_brain.sh remain). Set
 # REQUIRE_BACKUP=1 to abort the update if the snapshot cannot be taken.

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://hbar.systems/schemas/brain/app.schema.json",
+  "$id": "https://github.com/gregorygerman777-hub/BRAINF/schemas/brain/app.schema.json",
   "title": "Brain App Manifest Schema",
   "description": "Frontmatter schema for brain-app.yaml — the manifest declared by an installable brain app. A brain app runs as a sandboxed iframe inside a BrainFoundry brain, addressing brain memory and endpoints through a postMessage bridge gated by manifest-declared permissions. Validates the YAML manifest at the root of any installable brain-app repo.",
   "type": "object",

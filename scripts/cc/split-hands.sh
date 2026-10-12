@@ -7,15 +7,16 @@
 # of the bridge needs an operator token that only the console's proxy adds. Closes the gap
 # recorded in hbar.security (the bridge and the reasoner shared a user).
 #
-# Runs ON the box as the brain user (hbar) with sudo, once; rerunnable (each step checks).
+# Runs ON the box as the brain user with sudo, once; rerunnable (each step checks).
 #   bash scripts/cc/split-hands.sh          -> do it
 #   bash scripts/cc/split-hands.sh verify   -> the four checks, nothing changed
 # Rollback: remove CC_HANDS_USER, CC_HANDS_HOME, CC_OPERATOR_TOKEN from the bridge env,
 # empty /etc/caddy/cc.env, move the folders back, restart cc-bridge and reload caddy.
 set -euo pipefail
-BRAIN_DIR=${BRAIN_DIR:-/home/hbar/brain}
+BRAIN_DIR=${BRAIN_DIR:-/home/brain/brain}
 BRIDGE_USER=${BRIDGE_USER:-cc}
 HANDS_USER=${HANDS_USER:-hands}
+BRAIN_USER=${BRAIN_USER:-$(id -un)}
 BRIDGE_HOME=$(eval echo "~$BRIDGE_USER")
 HANDS_HOME=/home/$HANDS_USER
 ENV_FILE="$BRIDGE_HOME/.cc-bridge/env"
@@ -40,7 +41,7 @@ do)
     # there with the bridge never restarted (e2e, three times on 2026-09-28). SSH from a laptop.
     if [ -n "${TMUX:-}" ] || pstree -s $$ 2>/dev/null | grep -q ttyd; then
         echo "run this over SSH from your laptop, not in the console's Terminal pane: step 7 restarts that pane."
-        echo "  ssh -t hbar@<this box> bash $0"
+        echo "  ssh -t brain@<this box> bash $0"
         exit 1
     fi
     sudo test -f "$ENV_FILE" || { echo "no bridge env at $ENV_FILE"; exit 1; }
@@ -84,8 +85,8 @@ do)
     # the hands' git identity and token for pushes (the bridge user had them)
     if sudo test -f "$HANDS_HOME/.work/git-credentials"; then
         sudo -u "$HANDS_USER" -H git config --global credential.helper "store --file=$HANDS_HOME/.work/git-credentials"
-        sudo -u "$HANDS_USER" -H git config --global user.name "$(sudo -u "$BRIDGE_USER" -H git config --global user.name 2>/dev/null || echo 'hbar (via brain)')"
-        sudo -u "$HANDS_USER" -H git config --global user.email "$(sudo -u "$BRIDGE_USER" -H git config --global user.email 2>/dev/null || echo 'brain@hbar.systems')"
+        sudo -u "$HANDS_USER" -H git config --global user.name "$(sudo -u "$BRIDGE_USER" -H git config --global user.name 2>/dev/null || echo 'brain')"
+        sudo -u "$HANDS_USER" -H git config --global user.email "$(sudo -u "$BRIDGE_USER" -H git config --global user.email 2>/dev/null || echo 'brain@localhost')"
         sudo -u "$HANDS_USER" -H git config --global pull.ff only
     fi
     echo "== 3/7 the reasoner CLI for $HANDS_USER"
@@ -97,7 +98,7 @@ do)
     echo "== 4/7 sudoers: the bridge may run commands as the hands, nothing else"
     # !syslog: sudo would otherwise write the reasoner's whole command line into the journal, memory
     # excerpts and the ask token included (found on hbar 2026-10-01); the bridge keeps its own audit
-    printf 'Defaults:%s !syslog\n%s ALL=(%s) NOPASSWD: /usr/bin/env\n%s ALL=(%s) NOPASSWD: /usr/bin/env\n' "$BRIDGE_USER" "$BRIDGE_USER" "$HANDS_USER" "hbar" "$HANDS_USER" | sudo tee /etc/sudoers.d/cc-hands >/dev/null
+    printf 'Defaults:%s !syslog\n%s ALL=(%s) NOPASSWD: /usr/bin/env\n%s ALL=(%s) NOPASSWD: /usr/bin/env\n' "$BRIDGE_USER" "$BRIDGE_USER" "$HANDS_USER" "$BRAIN_USER" "$HANDS_USER" | sudo tee /etc/sudoers.d/cc-hands >/dev/null
     sudo chmod 440 /etc/sudoers.d/cc-hands; sudo visudo -cf /etc/sudoers.d/cc-hands >/dev/null
     echo "== 5/7 the operator token"
     TOK=$(getenv CC_OPERATOR_TOKEN); [ -n "$TOK" ] || TOK=$(python3 -c 'import secrets;print(secrets.token_hex(24))')

@@ -12,7 +12,7 @@ This guide covers deploying brainfoundry-nous on a VPS or dedicated server for p
 ## Quick Deploy
 
 ```bash
-git clone https://github.com/hbar-systems/brainfoundry-nous.git my-brain
+git clone https://github.com/gregorygerman777-hub/BRAINF.git my-brain
 cd my-brain
 cp .env.example .env
 nano .env          # fill in all required fields
@@ -139,7 +139,7 @@ the two `/admin/update` mounts:
 ```bash
 cp docker-compose.override.yml.example docker-compose.override.yml
 # edit it: uncomment the docker.sock + ${BRAIN_HOST_DIR} mounts under services.api.volumes
-# set BRAIN_HOST_DIR in .env to this repo's absolute host path if it isn't /home/hbar/brain
+# set BRAIN_HOST_DIR in .env to this repo's absolute host path if it isn't /home/brain/brain
 docker compose up -d
 ```
 

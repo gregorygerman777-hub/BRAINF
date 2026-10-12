@@ -261,7 +261,7 @@ SYSTEM += (
 )
 
 # The workshop (optional): a read-only mirror of the owner's own repositories on the box
-# (CC_WORLD_DIR, e.g. /home/hbar/world, refreshed by a timer). The reasoner may read it;
+# (CC_WORLD_DIR, e.g. /home/brain/world, refreshed by a timer). The reasoner may read it;
 # it is added to the allowed directories per turn. Memory remembers; the mirror is looked up.
 WORLD_DIR = os.environ.get("CC_WORLD_DIR", "").strip()
 if WORLD_DIR and not Path(WORLD_DIR).is_dir():

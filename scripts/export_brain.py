@@ -24,7 +24,7 @@ USAGE  (run on your laptop)
     <ssh_host>  brain host, e.g. nous.brainfoundry.ai or 62.238.4.20
     --out       archive path (default: ./brain-export-<host>-<UTC>.tar.gz)
 
-  SSH as `hbar` with $HOME/.ssh/id_ed25519_brainfoundry_automation
+  SSH as `brain` with $HOME/.ssh/id_ed25519_brainfoundry_automation
   (override with $BRAINFOUNDRY_KEY). Matches scripts/reembed_null_embeddings.py.
 
 DESIGN
@@ -46,7 +46,7 @@ import tarfile
 import tempfile
 from pathlib import Path
 
-BRAIN_DIR = "/home/hbar/brain"
+BRAIN_DIR = "/home/brain/brain"
 COMPOSE = f"docker compose -f {BRAIN_DIR}/docker-compose.yml"
 SELF_IN_CONTAINER = f"{BRAIN_DIR}/scripts/export_brain.py"
 ARCHIVE_FORMAT = "brainfoundry-brain-export/v1"
@@ -144,7 +144,7 @@ def worker_probe() -> int:
 def ssh_base(host: str) -> list:
     key = os.environ.get("BRAINFOUNDRY_KEY",
                          str(Path.home() / ".ssh" / "id_ed25519_brainfoundry_automation"))
-    return ["ssh", "-i", key, "-o", "StrictHostKeyChecking=accept-new", f"hbar@{host}"]
+    return ["ssh", "-i", key, "-o", "StrictHostKeyChecking=accept-new", f"brain@{host}"]
 
 
 def ssh_run(host: str, remote_cmd: str, stdin: str | None = None,

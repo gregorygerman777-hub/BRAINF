@@ -12,3 +12,11 @@ your own API keys), and keeps everything on *your* box — no vendor sees your
 data, nothing phones home. It's for anyone who wants a private, personal AI with
 real memory instead of a chat box that forgets.
 
+
+## Origin and license
+
+This is Gregory German's fork of
+[brainfoundry-nous](https://github.com/hbar-systems/brainfoundry-nous), created
+by Yury Chernyak and the hbar.systems contributors. It is licensed under the
+GNU AGPL v3, the same as the original; see [LICENSE](LICENSE) and
+[NOTICE](NOTICE). Changes made in this fork are Copyright (c) 2026 Gregory German.

@@ -20,7 +20,7 @@ Used by:
   - (the console "name your brain" button runs the same logic via the API)
 
 Usage:
-  python scripts/personalize_persona.py --brain-name "Hbar" --owner-name "Yury"
+  python scripts/personalize_persona.py --brain-name "Ada" --owner-name "Sam"
 """
 import argparse
 import sys
@@ -48,7 +48,7 @@ def personalize(brain_name: str, owner_name: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    parser.add_argument("--brain-name", required=True, help="Display name of the brain (e.g., 'Hbar')")
+    parser.add_argument("--brain-name", required=True, help="Display name of the brain (e.g., 'Ada')")
     parser.add_argument("--owner-name", required=True, help="Owner's first name (e.g., 'Yury')")
     args = parser.parse_args()
     personalize(args.brain_name, args.owner_name)

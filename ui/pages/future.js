@@ -98,12 +98,12 @@ export default function Future() {
           </p>
           <p style={{ color: '#8b7d6e', fontSize: '13px', lineHeight: '1.6', margin: 0 }}>
             Want to contribute, suggest a feature, or build something custom on top? The brain template is open source at{' '}
-            <a href="https://github.com/hbar-systems/brainfoundry-nous" target="_blank" rel="noreferrer" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
-              github.com/hbar-systems/brainfoundry-nous
+            <a href="https://github.com/gregorygerman777-hub/BRAINF" target="_blank" rel="noreferrer" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
+              github.com/gregorygerman777-hub/BRAINF
             </a>{' '}
             — fork it, file issues, or email{' '}
-            <a href="mailto:hello@hbar.systems?subject=contribute" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
-              hello@hbar.systems
+            <a href="mailto:hello@example.com?subject=contribute" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
+              hello@example.com
             </a>
             . Your friction is our roadmap.
           </p>

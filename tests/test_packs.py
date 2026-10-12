@@ -82,7 +82,7 @@ def test_shipped_base_pack_is_valid_and_is_defaults_plus_oracle():
 def test_load_pack_reads_packs_dir_first(tmp_path):
     _write_pack(tmp_path, _pack("base", ["xray"]))
     (tmp_path / "defaults.json").write_text(json.dumps({"apps": [
-        {"id": "old-app", "repo_url": "https://github.com/hbar-systems/old-app"}]}))
+        {"id": "old-app", "repo_url": "https://github.com/example-org/old-app"}]}))
     pack = apps.load_pack("base")
     assert [a["id"] for a in pack["apps"]] == ["xray"]
     assert pack["version"] == "0.1.0"
@@ -90,7 +90,7 @@ def test_load_pack_reads_packs_dir_first(tmp_path):
 
 def test_load_pack_base_falls_back_to_defaults_alias(tmp_path):
     (tmp_path / "defaults.json").write_text(json.dumps({"apps": [
-        {"id": "old-app", "repo_url": "https://github.com/hbar-systems/old-app"}]}))
+        {"id": "old-app", "repo_url": "https://github.com/example-org/old-app"}]}))
     pack = apps.load_pack("base")
     assert [a["id"] for a in pack["apps"]] == ["old-app"]
     assert pack["version"] == "0.0.0-defaults"
@@ -236,7 +236,7 @@ def _manifest(compute=None):
     m = {
         "dialect": "brain-app/v1", "id": "planner-bridge", "name": "planner bridge",
         "version": "0.1.0", "description": "d", "license": "AGPL-3.0",
-        "author": {"name": "hbar"}, "repo": "https://github.com/hbar-systems/planner-bridge",
+        "author": {"name": "example"}, "repo": "https://github.com/example-org/planner-bridge",
         "tab": {"label": "Planner", "route": "/planner"}, "entries": {"ui_bundle": "dist"},
     }
     if compute is not None:

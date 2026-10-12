@@ -29,35 +29,35 @@ def test_registered_yellow():
 
 
 def test_empty_query():
-    r = _run(brain_call.run("hbar-university", ""))
+    r = _run(brain_call.run("peer-university", ""))
     assert r.ok is False and "empty query" in r.error
 
 
 def test_unknown_peer_lists_known(monkeypatch):
-    _fake_peers(monkeypatch, [{"brain_id": "hbar-university", "endpoint": "https://u"}])
+    _fake_peers(monkeypatch, [{"brain_id": "peer-university", "endpoint": "https://u"}])
     r = _run(brain_call.run("nope", "what is bayes"))
     assert r.ok is False
     assert "unknown peer 'nope'" in r.error
-    assert "hbar-university" in r.error
+    assert "peer-university" in r.error
 
 
 def test_successful_call_attributes_and_wraps(monkeypatch):
-    _fake_peers(monkeypatch, [{"brain_id": "hbar-university", "endpoint": "https://u"}])
+    _fake_peers(monkeypatch, [{"brain_id": "peer-university", "endpoint": "https://u"}])
 
     async def fake_query(endpoint, query, assertion=None):
         assert endpoint == "https://u" and query == "what is bayes"
-        return {"brain_id": "hbar-university", "answer": "Bayes' theorem relates...", "documents_used": 3}
+        return {"brain_id": "peer-university", "answer": "Bayes' theorem relates...", "documents_used": 3}
 
     monkeypatch.setattr(brain_call, "_query_peer", fake_query)
-    r = _run(brain_call.run("hbar-university", "what is bayes"))
+    r = _run(brain_call.run("peer-university", "what is bayes"))
     assert r.ok is True
     # Attributed to the peer, and framed as a non-owner reference.
-    assert "hbar-university" in r.content
+    assert "peer-university" in r.content
     assert "not your owner" in r.content
     assert "Bayes' theorem relates" in r.content
     # Provenance points at the peer brain.
     assert r.provenance[0]["tool"] == "brain_call"
-    assert r.provenance[0]["title"].startswith("hbar-university")
+    assert r.provenance[0]["title"].startswith("peer-university")
     assert r.meta["documents_used"] == 3
 
 

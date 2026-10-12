@@ -317,8 +317,8 @@ export default function Update() {
           </h1>
           <p style={{ color: COLORS.muted, fontSize: '14px', margin: 0, lineHeight: '1.55' }}>
             Pulls the latest brain template from{' '}
-            <a href="https://github.com/hbar-systems/brainfoundry-nous" target="_blank" rel="noreferrer" style={{ color: COLORS.accent }}>
-              github.com/hbar-systems/brainfoundry-nous
+            <a href="https://github.com/gregorygerman777-hub/BRAINF" target="_blank" rel="noreferrer" style={{ color: COLORS.accent }}>
+              github.com/gregorygerman777-hub/BRAINF
             </a>{' '}
             and rebuilds in place. Your chats, documents, and models persist —
             only the code is replaced.
@@ -585,13 +585,13 @@ export default function Update() {
             <li style={{ marginBottom: '8px' }}>
               SSH into your brain (replace <code style={{ color: COLORS.muted, fontFamily: 'DM Mono, monospace', fontSize: '11px' }}>&lt;handle&gt;</code> with your brain&rsquo;s name):
               <pre style={{ background: '#0e0c0b', border: '1px solid #2a2420', borderRadius: '6px', padding: '10px 12px', color: '#e8e0d5', fontSize: '11px', fontFamily: 'DM Mono, monospace', margin: '6px 0 0 0', overflowX: 'auto' }}>
-{`ssh -i ~/.ssh/brainfoundry-<handle>.key hbar@<handle>.brainfoundry.ai`}
+{`ssh -i ~/.ssh/brainfoundry-<handle>.key brain@<handle>.brainfoundry.ai`}
               </pre>
             </li>
             <li style={{ marginBottom: '8px' }}>
               Move into your brain&rsquo;s directory:
               <pre style={{ background: '#0e0c0b', border: '1px solid #2a2420', borderRadius: '6px', padding: '10px 12px', color: '#e8e0d5', fontSize: '11px', fontFamily: 'DM Mono, monospace', margin: '6px 0 0 0', overflowX: 'auto' }}>
-{`cd /home/hbar/brain`}
+{`cd /home/brain/brain`}
               </pre>
             </li>
             <li>

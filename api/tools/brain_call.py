@@ -61,7 +61,7 @@ def callable_peers() -> List[Dict[str, str]]:
     """[{brain_id, endpoint}] from the introduced-peers directory. Empty on any
     error — no peers means brain_call simply has nothing to call."""
     try:
-        from api.hbar_commands import _load_peers
+        from api.node_commands import _load_peers
         return [{"brain_id": p["brain_id"], "endpoint": p["endpoint"]}
                 for p in _load_peers()
                 if p.get("brain_id") and p.get("endpoint")]

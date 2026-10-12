@@ -19,7 +19,7 @@ def _fresh_module(tmp_path, monkeypatch):
 
 def test_record_and_tail_roundtrip(tmp_path, monkeypatch):
     fa = _fresh_module(tmp_path, monkeypatch)
-    fa.record_event(direction="out", peer_brain_id="hbar-university",
+    fa.record_event(direction="out", peer_brain_id="peer-university",
                     query="what is bayes", documents_used=3, answer_len=120,
                     verified=True, outcome="ok")
     fa.record_event(direction="in", peer_brain_id="anonymous",
@@ -28,7 +28,7 @@ def test_record_and_tail_roundtrip(tmp_path, monkeypatch):
     entries = fa.tail(50)
     assert len(entries) == 2
     out, inn = entries  # newest last; insertion order preserved
-    assert out["direction"] == "out" and out["peer_brain_id"] == "hbar-university"
+    assert out["direction"] == "out" and out["peer_brain_id"] == "peer-university"
     assert out["verified"] is True and out["trust"] == "peer"
     assert out["query_summary"] == "what is bayes"
     assert inn["direction"] == "in" and inn["trust"] == "anonymous"

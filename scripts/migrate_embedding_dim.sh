@@ -21,8 +21,8 @@
 #       (no source-file re-upload needed since `content` survives the ALTER).
 #
 # ASSUMPTIONS
-#   - Host runs the brainfoundry-nous compose stack at /home/hbar/brain
-#   - SSH as `hbar` with $HOME/.ssh/id_ed25519_brainfoundry_automation
+#   - Host runs the brainfoundry-nous compose stack at /home/brain/brain
+#   - SSH as `brain` with $HOME/.ssh/id_ed25519_brainfoundry_automation
 #     (override with $BRAINFOUNDRY_KEY)
 #   - The postgres service in compose is named `postgres`
 
@@ -50,8 +50,8 @@ USAGE
 fi
 
 KEY="${BRAINFOUNDRY_KEY:-$HOME/.ssh/id_ed25519_brainfoundry_automation}"
-SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=accept-new "hbar@${HOST}")
-PSQL='docker compose -f /home/hbar/brain/docker-compose.yml exec -T postgres psql -U postgres -d llm_db'
+SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=accept-new "brain@${HOST}")
+PSQL='docker compose -f /home/brain/brain/docker-compose.yml exec -T postgres psql -U postgres -d llm_db'
 
 echo "== ${HOST} =="
 
@@ -84,9 +84,9 @@ fi
 if [[ "${ROWS:-0}" -gt 0 ]]; then
   STAMP=$(date -u +%Y%m%dT%H%M%SZ)
   SAFE_HOST=${HOST//./_}
-  BACKUP="/home/hbar/brain-backups/${SAFE_HOST}-document_embeddings-${STAMP}.sql"
+  BACKUP="/home/brain/brain-backups/${SAFE_HOST}-document_embeddings-${STAMP}.sql"
   echo "  pg_dump backup -> ${BACKUP}"
-  "${SSH[@]}" "mkdir -p /home/hbar/brain-backups && docker compose -f /home/hbar/brain/docker-compose.yml exec -T postgres pg_dump -U postgres -d llm_db -t document_embeddings --column-inserts > ${BACKUP} && wc -c ${BACKUP}"
+  "${SSH[@]}" "mkdir -p /home/brain/brain-backups && docker compose -f /home/brain/brain/docker-compose.yml exec -T postgres pg_dump -U postgres -d llm_db -t document_embeddings --column-inserts > ${BACKUP} && wc -c ${BACKUP}"
 fi
 
 echo "  ALTER + recreate ivfflat..."

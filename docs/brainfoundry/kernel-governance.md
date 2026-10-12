@@ -119,7 +119,7 @@ Available at the `/kernel` tab in the brain console. Fields:
 
 Endpoint: `POST /api/bf/v1/brain/command`
 
-Requires `HBAR_BRAIN_API_KEY` — passed as `Authorization: Bearer <key>` header.
+Requires `BRAIN_API_KEY` — passed as `Authorization: Bearer <key>` header.
 
 ### CLI — Local mode
 

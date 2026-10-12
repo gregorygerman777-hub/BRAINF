@@ -98,7 +98,7 @@ def main() -> int:
     key = os.environ.get("BRAINFOUNDRY_KEY") or os.path.expanduser("~/.ssh/id_ed25519_brainfoundry_automation")
 
     docker_args = [
-        "docker", "compose", "-f", "/home/hbar/brain/docker-compose.yml",
+        "docker", "compose", "-f", "/home/brain/brain/docker-compose.yml",
         "exec", "-T",
         "-e", f"REEMBED_BATCH_SIZE={args.batch_size}",
     ]
@@ -110,7 +110,7 @@ def main() -> int:
     remote_cmd = " ".join(shlex.quote(a) for a in docker_args)
     ssh_cmd = [
         "ssh", "-i", key, "-o", "StrictHostKeyChecking=accept-new",
-        f"hbar@{args.host}",
+        f"brain@{args.host}",
         remote_cmd,
     ]
 

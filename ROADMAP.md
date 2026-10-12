@@ -160,7 +160,7 @@ under `docker compose`. Anyone with SSH access (which every customer has —
 see provisioner's customer-SSH delivery) can:
 
 ```
-cd /home/hbar/brain
+cd /home/brain/brain
 git pull origin main
 docker compose up -d --build api ui
 ```

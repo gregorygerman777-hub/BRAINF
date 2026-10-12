@@ -3245,7 +3245,7 @@ def _identify_federation_caller(http_request: Request) -> tuple[Optional[str], b
         return None, False
     try:
         import base64 as _b64
-        from api.hbar_commands import find_peer_by_brain_id
+        from api.node_commands import find_peer_by_brain_id
         from api.identity.core import verify_federation_assertion
         # Peek the unverified issuer to find which pinned key to verify against.
         claims_b64 = token.split(".")[1]
@@ -3707,7 +3707,7 @@ class IntroducePeerRequest(BaseModel):
 def federation_list_peers(api_key: str = Depends(get_api_key)):
     """The introduced-peers directory (data/peers.json). `pinned` flags whether
     a federation public key was captured so inbound assertions can be verified."""
-    from api.hbar_commands import _load_peers
+    from api.node_commands import _load_peers
     peers = []
     for p in _load_peers():
         peers.append({
@@ -3724,9 +3724,9 @@ async def federation_introduce_peer(req: IntroducePeerRequest, api_key: str = De
     """Introduce a peer by endpoint: validate the URL (SSRF-guarded), fetch the
     peer's /identity, and persist {brain_id, endpoint, public_key} to the
     introduced-peers directory. Idempotent on brain_id."""
-    from api.hbar_commands import handle_hbar_command
+    from api.node_commands import handle_node_command
     try:
-        result = await handle_hbar_command(
+        result = await handle_node_command(
             command="peers.introduce",
             payload={"endpoint": req.endpoint},
             client_id="console",
@@ -3744,9 +3744,9 @@ async def federation_introduce_peer(req: IntroducePeerRequest, api_key: str = De
 async def federation_ping_peer(req: dict, api_key: str = Depends(get_api_key)):
     """Health-check a peer by id (looked up in the directory) or raw endpoint —
     the 'Test federation' action next to each peer in the UI."""
-    from api.hbar_commands import handle_hbar_command
+    from api.node_commands import handle_node_command
     try:
-        return await handle_hbar_command(
+        return await handle_node_command(
             command="peers.ping",
             payload={"id": (req.get("id") or "").strip(), "endpoint": (req.get("endpoint") or "").strip()},
             client_id="console",
@@ -3758,9 +3758,9 @@ async def federation_ping_peer(req: dict, api_key: str = Depends(get_api_key)):
 @app.delete("/v1/federation/peers/{brain_id}")
 async def federation_remove_peer(brain_id: str, api_key: str = Depends(get_api_key)):
     """Remove a peer from the introduced-peers directory."""
-    from api.hbar_commands import handle_hbar_command
+    from api.node_commands import handle_node_command
     try:
-        return await handle_hbar_command(
+        return await handle_node_command(
             command="peers.remove",
             payload={"id": brain_id},
             client_id="console",
@@ -5362,7 +5362,7 @@ async def brain_command(
     # permit verification + proposal trail + auto-approve. The old
     # propose-confirm + execution-class system is redundant for them.
     if command_spec.execution_class == ExecutionClass.NODEOS_GATED:
-        from api.hbar_commands import handle_hbar_command
+        from api.node_commands import handle_node_command
 
         gate_proposal_id: Optional[str] = None
         _payload = request.payload or {}
@@ -5400,7 +5400,7 @@ async def brain_command(
                     client_id=request.client_id,
                 )
 
-            result = await handle_hbar_command(
+            result = await handle_node_command(
                 command=normalized_command,
                 payload=_payload,
                 client_id=request.client_id,
@@ -6061,7 +6061,7 @@ async def brain_command(
                         'audit', 'audit.clear', 'policy',
                         'ingest', 'think',
                     }:
-                        from api.hbar_commands import handle_hbar_command
+                        from api.node_commands import handle_node_command
 
                         # ── v0.6: gate brain-layer mutations through NodeOS ──
                         # remember/forget/audit.clear were historically routed
@@ -6103,7 +6103,7 @@ async def brain_command(
                                 client_id=request.client_id,
                             )
 
-                        result = await handle_hbar_command(
+                        result = await handle_node_command(
                             command=normalized_command,
                             payload=_payload,
                             client_id=request.client_id,
@@ -6499,7 +6499,7 @@ def admin_trace(api_key: str = Depends(get_api_key)):
 # ─────────────────────────────────────────────────────────────────────────────
 import subprocess
 
-BRAIN_HOST_DIR = os.getenv("BRAIN_HOST_DIR", "/home/hbar/brain")
+BRAIN_HOST_DIR = os.getenv("BRAIN_HOST_DIR", "/home/brain/brain")
 
 
 def _update_preflight() -> Optional[str]:

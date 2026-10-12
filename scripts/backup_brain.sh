@@ -34,19 +34,19 @@
 #   scripts/backup_brain.sh --label TEXT    # tag the manifest (e.g. a commit)
 #
 # ENV OVERRIDES
-#   BRAIN_DIR      brain checkout / compose dir   (default /home/hbar/brain)
-#   BACKUP_DIR     where artifacts land           (default /home/hbar/brain-backups)
+#   BRAIN_DIR      brain checkout / compose dir   (default /home/brain/brain)
+#   BACKUP_DIR     where artifacts land           (default /home/brain/brain-backups)
 #   DAILY_KEEP     daily artifacts to retain       (default 7)
 #   WEEKLY_KEEP    weekly artifacts to retain       (default 4)
 #   PREUPDATE_KEEP pre-update snapshots to retain   (default 10)
 #
 # SCHEDULE (host cron — simplest, sovereign; see docs/RESTORE.md):
-#   15 3 * * *  /home/hbar/brain/scripts/backup_brain.sh >> /home/hbar/brain-backups/backup.log 2>&1
+#   15 3 * * *  /home/brain/brain/scripts/backup_brain.sh >> /home/brain/brain-backups/backup.log 2>&1
 
 set -euo pipefail
 
-BRAIN_DIR="${BRAIN_DIR:-/home/hbar/brain}"
-BACKUP_DIR="${BACKUP_DIR:-/home/hbar/brain-backups}"
+BRAIN_DIR="${BRAIN_DIR:-/home/brain/brain}"
+BACKUP_DIR="${BACKUP_DIR:-/home/brain/brain-backups}"
 DAILY_KEEP="${DAILY_KEEP:-7}"
 WEEKLY_KEEP="${WEEKLY_KEEP:-4}"
 PREUPDATE_KEEP="${PREUPDATE_KEEP:-10}"

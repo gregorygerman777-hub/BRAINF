@@ -40,7 +40,7 @@ def status() -> Dict[str, Any]:
 
 
 def webhook_url() -> str:
-    base = os.getenv("PUBLIC_API_BASE", "https://hbar.brainfoundry.ai").rstrip("/")
+    base = os.getenv("PUBLIC_API_BASE", "http://localhost:8010").rstrip("/")
     return f"{base}/integrations/telegram/webhook"
 
 

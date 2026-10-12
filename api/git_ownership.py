@@ -49,7 +49,7 @@ def repair_repo_ownership(repo_dir: str | None = None) -> None:
     .git — back to the host owner so host `git pull` works (checkout must unlink
     tracked files; .git needs FETCH_HEAD writable). Detect-and-heal: when nothing
     is root-owned it's just the cheap .git pass. Never raises."""
-    repo = Path(repo_dir or os.environ.get("BRAIN_HOST_DIR", "/home/hbar/brain"))
+    repo = Path(repo_dir or os.environ.get("BRAIN_HOST_DIR", "/home/brain/brain"))
     try:
         if not (repo / ".git").exists():
             return
@@ -77,7 +77,7 @@ def repair_repo_ownership(repo_dir: str | None = None) -> None:
 def chown_git_to_host_owner(repo_dir: str | None = None) -> None:
     """Re-own `<repo>/.git` (recursively) to the host owner. No-op when there is
     no .git or no distinct owner to restore to."""
-    repo = Path(repo_dir or os.environ.get("BRAIN_HOST_DIR", "/home/hbar/brain"))
+    repo = Path(repo_dir or os.environ.get("BRAIN_HOST_DIR", "/home/brain/brain"))
     git_dir = repo / ".git"
     try:
         if not git_dir.exists():

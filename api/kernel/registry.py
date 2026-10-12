@@ -391,11 +391,11 @@ def parse_normalized_command(normalized_command: str):
     if "." in parts[0]:
         return parts[0], {}
     # brain single-word commands
-    hbar_single = {
+    brain_single = {
         "remember", "recall", "forget", "memories",
         "peers", "introduce", "model", "audit", "policy", "ingest", "think",
     }
-    if parts[0] in hbar_single:
+    if parts[0] in brain_single:
         return parts[0], {}
     # fall through to original
     return _original_parse(normalized_command)

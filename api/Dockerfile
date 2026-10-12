@@ -16,7 +16,7 @@ RUN apt-get update \
 # The Update endpoint runs as root in this container; the brain repo is
 # bind-mounted and owned by uid 1000. Without this, git 2.47's dubious-ownership
 # guard refuses every git command (the Update tab + version status boxes).
-RUN git config --system --add safe.directory /home/hbar/brain
+RUN git config --system --add safe.directory /home/brain/brain
 
 WORKDIR /app
 

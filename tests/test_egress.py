@@ -154,7 +154,7 @@ def test_scan_passes_normal_fetch_url():
 def test_scan_passes_normal_brain_call():
     from api.tools import egress
     allow, reason = egress.scan_outbound(
-        "brain_call", {"target": "hbar.science", "query": "What is the boiling point of water?"},
+        "brain_call", {"target": "peer.science", "query": "What is the boiling point of water?"},
         "yellow")
     assert allow is True and reason == ""
 

@@ -3,7 +3,7 @@
 #
 # Make a brain directory a git checkout that tracks origin/main, in place.
 #
-# Brains are rsync-deployed with --exclude='.git', so /home/hbar/brain ends up
+# Brains are rsync-deployed with --exclude='.git', so /home/brain/brain ends up
 # in one of two broken states:
 #   (a) no .git at all — the console Update button and `brain update` fail
 #       with "not a git repository";
@@ -38,7 +38,7 @@
 
 set -euo pipefail
 
-REMOTE_URL="https://github.com/hbar-systems/brainfoundry-nous.git"
+REMOTE_URL="https://github.com/gregorygerman777-hub/BRAINF.git"
 
 # --- locate the brain directory ----------------------------------------------
 # Resolve to a physical (symlink-free) path so the --show-toplevel guard below

@@ -3100,7 +3100,7 @@ export default function Chat() {
                 type="text"
                 value={personaBrainName}
                 onChange={e => setPersonaBrainName(e.target.value)}
-                placeholder="what you'll call it — e.g. Hbar"
+                placeholder="what you'll call it — e.g. Ada"
                 autoFocus
                 maxLength={80}
                 style={{

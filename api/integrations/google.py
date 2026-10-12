@@ -57,7 +57,7 @@ def _client() -> tuple[str, str]:
 
 
 def redirect_uri() -> str:
-    base = os.getenv("PUBLIC_API_BASE", "https://hbar.brainfoundry.ai").rstrip("/")
+    base = os.getenv("PUBLIC_API_BASE", "http://localhost:8010").rstrip("/")
     return f"{base}/integrations/google/callback"
 
 

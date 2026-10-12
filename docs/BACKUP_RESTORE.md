@@ -15,7 +15,7 @@ home):
 
 ## What's in an artifact
 
-Each run writes a directory under `BACKUP_DIR` (default `/home/hbar/brain-backups`):
+Each run writes a directory under `BACKUP_DIR` (default `/home/brain/brain-backups`):
 
 ```
 <BACKUP_DIR>/daily/20260613T031500Z/
@@ -61,7 +61,7 @@ One daily per ISO week is hard-linked into `weekly/` (no extra disk).
 
 ```cron
 # nightly at 03:15, append to a log on the owner's box
-15 3 * * *  /home/hbar/brain/scripts/backup_brain.sh >> /home/hbar/brain-backups/backup.log 2>&1
+15 3 * * *  /home/brain/brain/scripts/backup_brain.sh >> /home/brain/brain-backups/backup.log 2>&1
 ```
 
 A compose sidecar would also work, but host cron is the v0 recommendation: one
@@ -72,7 +72,7 @@ line, on the owner's machine, no extra container.
 `scripts/update_brain.sh` (the in-container "Update" tab path) calls
 `backup_brain.sh --pre-update` **before** it pulls and rebuilds. A bad deploy
 then costs minutes, not a brain. Because that script runs inside the api
-container — where `/home/hbar/brain-backups` is not mounted — those snapshots
+container — where `/home/brain/brain-backups` is not mounted — those snapshots
 land under `<BRAIN_DIR>/.brain-backups/pre-update/` instead (the brain dir is
 bind-mounted, so they survive the rebuild). It is best-effort: a failed snapshot
 warns but does not block the update. Set `REQUIRE_BACKUP=1` to make a missing
@@ -84,7 +84,7 @@ that path runs entirely on the remote host and does **not** auto-snapshot. Take
 one first:
 
 ```bash
-ssh <brain-host> "cd /home/hbar/brain && scripts/backup_brain.sh --pre-update --label pre-deploy"
+ssh <brain-host> "cd /home/brain/brain && scripts/backup_brain.sh --pre-update --label pre-deploy"
 ```
 
 ## Restore — the fresh-box runbook
@@ -94,13 +94,13 @@ dump runs.
 
 1. **Get the artifact onto the box** (or it's already there from a local backup):
    ```bash
-   scp -r mylaptop:/path/to/20260613T031500Z  /home/hbar/restore-artifact
+   scp -r mylaptop:/path/to/20260613T031500Z  /home/brain/restore-artifact
    ```
 
 2. **Check out the repo and supply `.env`** (the one secret not in the artifact):
    ```bash
-   git clone <repo-url> /home/hbar/brain
-   cd /home/hbar/brain
+   git clone <repo-url> /home/brain/brain
+   cd /home/brain/brain
    cp /your/safe/place/.env .env       # API keys, BRAIN_PRIVATE_KEY, secrets
    ```
 
@@ -111,7 +111,7 @@ dump runs.
 
 4. **Restore from the artifact:**
    ```bash
-   scripts/restore_brain.sh /home/hbar/restore-artifact
+   scripts/restore_brain.sh /home/brain/restore-artifact
    # type 'restore' to confirm; --force to skip the prompt
    ```
 
@@ -129,9 +129,9 @@ steps 1–3:
 
 ```bash
 # host cron snapshots:
-scripts/restore_brain.sh /home/hbar/brain-backups/pre-update/<TS>
+scripts/restore_brain.sh /home/brain/brain-backups/pre-update/<TS>
 # Update-tab snapshots (in-container path):
-scripts/restore_brain.sh /home/hbar/brain/.brain-backups/pre-update/<TS>
+scripts/restore_brain.sh /home/brain/brain/.brain-backups/pre-update/<TS>
 ```
 
 ## Out of scope (v0)

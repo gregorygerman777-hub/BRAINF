@@ -36,8 +36,8 @@ In Model 2B (automated self-serve provisioning — what most buyers use today), 
 
 **For full hardware sovereignty, three options:**
 
-1. **Model 2A (self-hosted)** — clone `github.com/hbar-systems/brainfoundry-nous`, run it on YOUR Hetzner account (or any cloud, or on-prem). You own the infrastructure end-to-end. We're not in the picture.
-2. **Model 3 (white-glove with project transfer)** — email `hello@hbar.systems` subject "premium brain". Premium tier provisions on dedicated hardware AND optionally transfers the Hetzner Cloud project to your own Hetzner account at handoff. You hold the API token after that.
+1. **Model 2A (self-hosted)** — clone `github.com/gregorygerman777-hub/BRAINF`, run it on YOUR Hetzner account (or any cloud, or on-prem). You own the infrastructure end-to-end. We're not in the picture.
+2. **Model 3 (white-glove with project transfer)** — email `hello@example.com` subject "premium brain". Premium tier provisions on dedicated hardware AND optionally transfers the Hetzner Cloud project to your own Hetzner account at handoff. You hold the API token after that.
 3. **Dedicated physical hardware** — operate a brain on hardware you physically own. We ship setup instructions; you handle the box.
 
 Default Model 2B is convenient but trades hardware sovereignty for setup ease. We tell you this rather than market around it.
@@ -56,7 +56,7 @@ The provisioner SSHes into your brain with an automation key during initial depl
 
 **Convenience mode (default — automation key intact):**
 - We can SSH into your brain to help if you ask (e.g. you lost your SSH key — see §5.1).
-- We will not access your brain without your written request via `hello@hbar.systems`.
+- We will not access your brain without your written request via `hello@example.com`.
 - Trust model: you trust BrainFoundry not to abuse access we technically have.
 
 **Full sovereignty mode (you remove the automation key):**
@@ -103,8 +103,8 @@ When your brain was provisioned, cloud-init applied these defaults at first boot
 In your welcome email under "Console password:". This unlocks the web console at `console.<your-brain>.brainfoundry.ai`.
 
 - **Save it in a password manager** (1Password, Bitwarden, KeePassXC, etc.) — we won't email it twice.
-- **Lost it?** SSH into your brain, look in `/home/hbar/brain/.env` — `BASIC_AUTH_PASSWORD=...`.
-- **Want to change it?** Edit `BASIC_AUTH_PASSWORD` in `.env`, then `cd /home/hbar/brain && docker compose up -d --build api`.
+- **Lost it?** SSH into your brain, look in `/home/brain/brain/.env` — `BASIC_AUTH_PASSWORD=...`.
+- **Want to change it?** Edit `BASIC_AUTH_PASSWORD` in `.env`, then `cd /home/brain/brain && docker compose up -d --build api`.
 
 ### 3.2 Your SSH key
 
@@ -117,30 +117,30 @@ The `brainfoundry-<your-brain>.key` file from your welcome email attachment.
 
 ### 3.3 Your model API keys (BYOK)
 
-If you added an Anthropic / OpenAI / Groq key to `/home/hbar/brain/.env`:
+If you added an Anthropic / OpenAI / Groq key to `/home/brain/brain/.env`:
 
-- The key is in plaintext in your `.env` file on your server. **Restrict access:** `chmod 600 /home/hbar/brain/.env` (already 600 by default).
+- The key is in plaintext in your `.env` file on your server. **Restrict access:** `chmod 600 /home/brain/brain/.env` (already 600 by default).
 - Your brain uses the key to call your model provider directly. Requests look like they come from your server's IP.
 - **We never see your key.** It's never transmitted to us, never logged outside your server.
 - **You pay your provider directly.** No BrainFoundry margin. Your bill is from Anthropic or OpenAI, not us.
 
 ### 3.4 Your federation keypair
 
-In `/home/hbar/brain/.env` as `BRAIN_PRIVATE_KEY` and `BRAIN_PUBLIC_KEY`.
+In `/home/brain/brain/.env` as `BRAIN_PRIVATE_KEY` and `BRAIN_PUBLIC_KEY`.
 
 - **The private key signs your brain's outbound federation messages.** Other brains verify your identity by your public key.
 - **Don't share the private key.** Public is fine — that's literally what gets shared in handshakes.
-- **If compromised, regenerate:** `cd /home/hbar/brain && python3 scripts/generate_keypair.py` — but understand this resets your federation identity (other brains will see you as a new entity).
+- **If compromised, regenerate:** `cd /home/brain/brain && python3 scripts/generate_keypair.py` — but understand this resets your federation identity (other brains will see you as a new entity).
 
 ---
 
 ## 4. Updating your brain safely
 
-Your brain pulls updates from the public template at `github.com/hbar-systems/brainfoundry-nous`. To pull the latest:
+Your brain pulls updates from the public template at `github.com/gregorygerman777-hub/BRAINF`. To pull the latest:
 
 ```bash
-ssh -i ~/.ssh/brainfoundry-<your-brain>.key hbar@<your-brain>.brainfoundry.ai
-cd /home/hbar/brain
+ssh -i ~/.ssh/brainfoundry-<your-brain>.key brain@<your-brain>.brainfoundry.ai
+cd /home/brain/brain
 ./scripts/update_brain.sh
 ```
 
@@ -158,9 +158,9 @@ The script:
 - BrainKernel state (governance permits, audit log)
 
 **What gets replaced** (code-only):
-- Python source in `/home/hbar/brain/api/`
-- UI source in `/home/hbar/brain/ui/`
-- Scripts in `/home/hbar/brain/scripts/`
+- Python source in `/home/brain/brain/api/`
+- UI source in `/home/brain/brain/ui/`
+- Scripts in `/home/brain/brain/scripts/`
 
 **When NOT to update:**
 - During an active session you don't want to lose context for (chats survive but the running container restarts, ~30 sec downtime).
@@ -169,7 +169,7 @@ The script:
 **Rollback if something goes wrong:**
 
 ```bash
-cd /home/hbar/brain
+cd /home/brain/brain
 git log --oneline -5    # find the last good commit
 git reset --hard <commit-hash>
 docker compose up -d --build
@@ -190,29 +190,29 @@ Volumes still survive. You're rolling back code only.
    ```
 2. **Add the new public key to the brain** (use your old key one last time):
    ```bash
-   ssh -i ~/.ssh/brainfoundry-<your-brain>.key hbar@<your-brain>.brainfoundry.ai
+   ssh -i ~/.ssh/brainfoundry-<your-brain>.key brain@<your-brain>.brainfoundry.ai
    nano ~/.ssh/authorized_keys
    # paste the new public key on its own line
    ```
-3. **Test the new key works:** open a new terminal, `ssh -i ~/.ssh/brainfoundry-<your-brain>-new.key hbar@<your-brain>.brainfoundry.ai`. If you get in, proceed.
+3. **Test the new key works:** open a new terminal, `ssh -i ~/.ssh/brainfoundry-<your-brain>-new.key brain@<your-brain>.brainfoundry.ai`. If you get in, proceed.
 4. **Remove the old key from `authorized_keys`.** Save.
 5. **Delete the old key file from your laptop:** `rm ~/.ssh/brainfoundry-<your-brain>.key`. Move the new one into place: `mv ~/.ssh/brainfoundry-<your-brain>-new.key ~/.ssh/brainfoundry-<your-brain>.key`.
 
 If you can't access the brain to swap keys (old key truly lost):
 
-- **Convenience mode (you kept the automation key — see §1):** email `hello@hbar.systems` with subject "key recovery". We'll SSH in via the automation key, issue you a new key, and confirm. **This is the only scenario where we use that automation key on your brain.**
+- **Convenience mode (you kept the automation key — see §1):** email `hello@example.com` with subject "key recovery". We'll SSH in via the automation key, issue you a new key, and confirm. **This is the only scenario where we use that automation key on your brain.**
 - **Full sovereignty mode (you removed the automation key):** we cannot help. The brain is unrecoverable from outside. You'd need to re-provision a new brain at your subdomain (email us — we can spin up a fresh one) and re-ingest from your local document copies. Existing chats inside the old brain are lost.
 
 This is the sovereignty/convenience tradeoff stated bluntly. It's also why we recommend backing up your SSH key to a password manager *immediately* upon receipt — long before you decide which mode you want.
 
 ### 5.2 Console password suspected compromised
 
-Edit `/home/hbar/brain/.env` → change `BASIC_AUTH_PASSWORD` to a new random value (32 hex chars: `openssl rand -hex 32`), then `docker compose up -d --build api`.
+Edit `/home/brain/brain/.env` → change `BASIC_AUTH_PASSWORD` to a new random value (32 hex chars: `openssl rand -hex 32`), then `docker compose up -d --build api`.
 
 ### 5.3 Model API key suspected compromised
 
 1. **Rotate at your provider first** (Anthropic / OpenAI dashboard → revoke old key, create new).
-2. Edit `/home/hbar/brain/.env` → replace the old key with the new one.
+2. Edit `/home/brain/brain/.env` → replace the old key with the new one.
 3. `docker compose up -d --build api`.
 4. Verify your brain can chat using the new key.
 5. Delete the old key from the provider entirely.
@@ -280,7 +280,7 @@ You own this brain. You can edit anything. But some changes are safer than other
 
 ### Safe — no risk of losing data
 
-- **Persona** (`/home/hbar/brain/api/brain_persona.md`) — change how your brain speaks, what it emphasizes. Edit, then `docker compose restart api`.
+- **Persona** (`/home/brain/brain/api/brain_persona.md`) — change how your brain speaks, what it emphasizes. Edit, then `docker compose restart api`.
 - **Memory layers** (Console → Settings → Memory layers) — rename, add, remove. Existing chunks are preserved; they just may not be auto-retrieved if you remove a layer they're tagged with.
 - **Model selection** (Console → Chat → model dropdown) — switch any time. Affects only future replies.
 - **Adding new docs** (Console → Knowledge tab) — additive, never destructive.
@@ -288,9 +288,9 @@ You own this brain. You can edit anything. But some changes are safer than other
 
 ### Risky — might break things, but won't lose data
 
-- **Editing API code** (`/home/hbar/brain/api/main.py`) — if you break a route, that route stops working. Other routes keep working. Use `git diff` before committing your changes.
-- **Editing UI code** (`/home/hbar/brain/ui/`) — broken UI doesn't break the brain. Worst case, you can't access the console; SSH still works.
-- **Changing Docker settings** (`/home/hbar/brain/docker-compose.yml`) — restart could fail; existing containers keep running until you actually restart.
+- **Editing API code** (`/home/brain/brain/api/main.py`) — if you break a route, that route stops working. Other routes keep working. Use `git diff` before committing your changes.
+- **Editing UI code** (`/home/brain/brain/ui/`) — broken UI doesn't break the brain. Worst case, you can't access the console; SSH still works.
+- **Changing Docker settings** (`/home/brain/brain/docker-compose.yml`) — restart could fail; existing containers keep running until you actually restart.
 
 ### Dangerous — can destroy data
 
@@ -301,7 +301,7 @@ You own this brain. You can edit anything. But some changes are safer than other
 ### Never do this
 
 - Commit your `.env` to git.
-- Run `chmod 777` anywhere in `/home/hbar/brain` to "fix permissions."
+- Run `chmod 777` anywhere in `/home/brain/brain` to "fix permissions."
 - Disable `fail2ban` or `ufw` "to debug" without re-enabling.
 - Pipe a script from the internet straight to bash without reading it.
 
@@ -313,8 +313,8 @@ You own this brain. You can edit anything. But some changes are safer than other
 
 - Provision your brain (one-time, at signup) and email you the credentials.
 - Host DNS for `*.brainfoundry.ai` so your subdomain routes to your server.
-- Maintain the public template at `github.com/hbar-systems/brainfoundry-nous`. Updates flow from there to your brain when you run `update_brain.sh`.
-- Respond to support requests at `hello@hbar.systems`.
+- Maintain the public template at `github.com/gregorygerman777-hub/BRAINF`. Updates flow from there to your brain when you run `update_brain.sh`.
+- Respond to support requests at `hello@example.com`.
 
 ### What we don't do
 
@@ -341,10 +341,10 @@ We tell you these three things explicitly rather than pretending the access does
 
 ## 9. Questions, support, contributing
 
-- **Support / problems:** `hello@hbar.systems` (subject prefix recommended: "support" or "security")
-- **Security disclosures:** `hello@hbar.systems` with subject "security disclosure" — we'll acknowledge within 48 hours
-- **Code contributions:** brainfoundry-nous is public. Open issues / PRs at `github.com/hbar-systems/brainfoundry-nous`.
-- **Premium / white-glove:** for fully-local + fast (dedicated GPU/big-RAM tier), email `hello@hbar.systems` subject "premium brain"
+- **Support / problems:** `hello@example.com` (subject prefix recommended: "support" or "security")
+- **Security disclosures:** `hello@example.com` with subject "security disclosure" — we'll acknowledge within 48 hours
+- **Code contributions:** brainfoundry-nous is public. Open issues / PRs at `github.com/gregorygerman777-hub/BRAINF`.
+- **Premium / white-glove:** for fully-local + fast (dedicated GPU/big-RAM tier), email `hello@example.com` subject "premium brain"
 
 ---
 

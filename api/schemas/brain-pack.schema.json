@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://hbar.systems/schemas/brain/pack.schema.json",
+  "$id": "https://github.com/gregorygerman777-hub/BRAINF/schemas/brain/pack.schema.json",
   "title": "Brain Pack Schema",
   "description": "A pack is a domain bundle installed on a brain: a list of brain-apps (installed through the normal GitHub-URL path), tool ids to enable, governance .md files to install, and an optional compute spoke declaration. Files live at brain-apps/packs/<name>.json in the brainfoundry-nous template. The base pack is what every instance ships with; other packs (music, video) require it. Added 2026-09-13 (unreleased 0.10.0).",
   "type": "object",

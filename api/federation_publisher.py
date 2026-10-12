@@ -35,7 +35,7 @@ router = APIRouter(prefix="/v1/federation/social", tags=["federation-social"])
 
 _api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
-RELAY_URL = os.getenv("HBAR_SOCIAL_RELAY_URL", "https://hbar.social/v1/relay/post")
+RELAY_URL = os.getenv("BRAIN_SOCIAL_RELAY_URL", "")
 PROTOCOL_VERSION = "0.5"
 VALID_POST_TYPES = {
     "text", "fivefield", "thought_drop", "project_announcement", "brain_summary",
@@ -158,6 +158,9 @@ async def publish(payload_unsigned: dict, *, private_key_b64url: str,
         "delivered": False, "http_code": None, "post_id": None,
         "stored_at": None, "error": None, "signature": signed["signature"],
     }
+    if not relay_url:
+        result["error"] = "no relay configured: set BRAIN_SOCIAL_RELAY_URL"
+        return result
     try:
         async with httpx.AsyncClient(timeout=15.0) as client:
             r = await client.post(
@@ -167,7 +170,7 @@ async def publish(payload_unsigned: dict, *, private_key_b64url: str,
                     "Protocol-Version": "0.5",
                     # Relay is behind a CDN/WAF that 403s default client UAs
                     # (Cloudflare error 1010); identify as the brain.
-                    "User-Agent": "brainfoundry-nous-publisher/0.5 (+https://hbar.brainfoundry.ai)",
+                    "User-Agent": "brainfoundry-nous-publisher/0.5 (+https://github.com/gregorygerman777-hub/BRAINF)",
                     "Accept": "application/json",
                 },
             )

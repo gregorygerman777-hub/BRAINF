@@ -23,7 +23,7 @@
 
 set -e
 
-BRAIN_DIR="${BRAIN_DIR:-/home/hbar/brain}"
+BRAIN_DIR="${BRAIN_DIR:-/home/brain/brain}"
 HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:8010/health}"
 STAMP="$BRAIN_DIR/.update-prev-commit"
 TS=$(date +%Y%m%d-%H%M%S)

@@ -22,11 +22,11 @@
 #   scripts/restore_brain.sh <artifact_dir> --force
 #
 # ENV OVERRIDES
-#   BRAIN_DIR   brain checkout / compose dir   (default /home/hbar/brain)
+#   BRAIN_DIR   brain checkout / compose dir   (default /home/brain/brain)
 
 set -euo pipefail
 
-BRAIN_DIR="${BRAIN_DIR:-/home/hbar/brain}"
+BRAIN_DIR="${BRAIN_DIR:-/home/brain/brain}"
 ARTIFACT=""
 FORCE=0
 while [ $# -gt 0 ]; do

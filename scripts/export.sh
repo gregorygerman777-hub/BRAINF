@@ -13,7 +13,7 @@
 # Restore: docs/EXPORT.md (db + persona via scripts/import_brain.py; apps
 # re-installed from apps/installed.json; md copied back).
 set -euo pipefail
-BRAIN_DIR="${BRAIN_DIR:-/home/hbar/brain}"
+BRAIN_DIR="${BRAIN_DIR:-/home/brain/brain}"
 DEST="${1:-.}"
 mkdir -p "$DEST"
 cd "$BRAIN_DIR"

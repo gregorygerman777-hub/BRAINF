@@ -44,7 +44,7 @@ def test_signature_strip_and_roundtrip():
     pub_raw = sk.public_key().public_bytes_raw()
 
     payload = {
-        "protocol_version": "0.5", "brain_handle": "hbar",
+        "protocol_version": "0.5", "brain_handle": "alice",
         "post_type": "text", "content": {"body": "hi"},
         "authorship": 1.0, "visibility": "public", "in_reply_to": None,
         "ts": 1750000000, "nonce": "a1b2c3d4e5f60718",

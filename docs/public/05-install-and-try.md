@@ -61,7 +61,7 @@ If the brain's owner is Bob, the CLI is `bob`. Each owner's CLI is the same tool
 If you are comfortable administering a Linux server, clone the public template and deploy it.
 
 ```
-git clone https://github.com/hbar-systems/brainfoundry-nous.git my-brain
+git clone https://github.com/gregorygerman777-hub/BRAINF.git my-brain
 cd my-brain
 cp .env.example .env
 ```

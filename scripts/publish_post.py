@@ -6,7 +6,7 @@ relay (PROTOCOL_CONTRACT §8). Mirrors api/federation_publisher.py but vendors
 the JCS canonicalizer inline and uses only the stdlib for HTTP, so it runs
 unchanged inside the brain's api container:
 
-    docker compose exec api python /home/hbar/brain/scripts/publish_post.py \
+    docker compose exec api python /home/brain/brain/scripts/publish_post.py \
         --type text --authorship 1.0 \
         --body "First post from a sovereign brain — curated by a mind, not an algorithm."
 
@@ -121,8 +121,7 @@ def main() -> int:
     ap.add_argument("--visibility", default="public", choices=["public", "unlisted"])
     ap.add_argument("--in-reply-to", default=None)
     ap.add_argument("--handle", default=None, help="override brain_handle (default $BRAIN_ID)")
-    ap.add_argument("--relay-url", default=os.getenv("HBAR_SOCIAL_RELAY_URL",
-                                                     "https://hbar.social/v1/relay/post"))
+    ap.add_argument("--relay-url", default=os.getenv("BRAIN_SOCIAL_RELAY_URL", ""))
     ap.add_argument("--dry-run", action="store_true",
                     help="print canonical bytes + signature, do NOT POST")
     args = ap.parse_args()
@@ -160,6 +159,9 @@ def main() -> int:
     if args.dry_run:
         print("\n[dry-run] not posting.")
         return 0
+    if not args.relay_url:
+        print("ERROR: no relay configured: pass --relay-url or set BRAIN_SOCIAL_RELAY_URL", file=sys.stderr)
+        return 2
 
     body = json.dumps(signed).encode("utf-8")
     req = urllib.request.Request(
@@ -169,7 +171,7 @@ def main() -> int:
             "Protocol-Version": "0.5",
             # The relay sits behind a CDN/WAF that 403s the default
             # Python-urllib UA (Cloudflare error 1010). Identify as the brain.
-            "User-Agent": "brainfoundry-nous-publisher/0.5 (+https://hbar.brainfoundry.ai)",
+            "User-Agent": "brainfoundry-nous-publisher/0.5 (+https://github.com/gregorygerman777-hub/BRAINF)",
             "Accept": "application/json",
         },
     )

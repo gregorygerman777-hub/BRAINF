@@ -53,7 +53,7 @@ def test_yellow_peer_query_recorded(tmp_path, monkeypatch):
     monkeypatch.setattr(providers, "default_model", lambda: "claude-sonnet-5")
     monkeypatch.setattr(providers, "supports_native_tools", lambda m: True)
     monkeypatch.setattr(autonomy, "_tools_spec_with_peers",
-                        lambda: ([{"name": "brain_call"}], ["hbar-science"]))
+                        lambda: ([{"name": "brain_call"}], ["peer-science"]))
 
     from api import tools as _tools
 
@@ -65,13 +65,13 @@ def test_yellow_peer_query_recorded(tmp_path, monkeypatch):
 
     async def _fake_turn(model, messages, spec, dispatch, **kw):
         # Model decides to consult the science peer.
-        await dispatch("brain_call", {"target": "hbar-science", "query": "q"})
-        return {"text": "Consulted hbar-science.", "tool_events": []}
+        await dispatch("brain_call", {"target": "peer-science", "query": "q"})
+        return {"text": "Consulted peer-science.", "tool_events": []}
 
     monkeypatch.setattr(providers, "complete_with_tools", _fake_turn)
 
     rec = _run(autonomy.run_tick(goal="learn"))
-    assert rec["peers_queried"] == ["hbar-science"]
+    assert rec["peers_queried"] == ["peer-science"]
     assert rec["red_refused"] == []
 
 

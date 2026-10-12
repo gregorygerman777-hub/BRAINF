@@ -160,7 +160,7 @@ Use Caddy. See `docs/DEPLOYMENT.md`.
 
 Deliver to client:
 1. **Credentials vault** (secure note or password manager share):
-   - API key (`HBAR_BRAIN_API_KEY`)
+   - API key (`BRAIN_API_KEY`)
    - Console URL
    - Server SSH access (if managed by BrainFoundry)
    - Brain public key (safe to publish, for federation)

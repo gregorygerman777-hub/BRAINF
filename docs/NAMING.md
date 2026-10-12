@@ -42,7 +42,7 @@ this release and listed here as a tracked follow-up. Do not rename piecemeal.
 | `NODEOS_URL`, `NODEOS_INTERNAL_KEY`, `NODEOS_SIGNING_SECRET`, `NODEOS_HMAC_SECRET`, `NODEOS_PUSH_BRANCH_ALLOWLIST` | `.env.example`, compose, `nodeos/main.py`, `api/main.py` | `BRAINKERNEL_*` | Every operator's `.env` sets these; a rename needs a compat shim reading both old and new names for ≥1 release. |
 | `nodeos/` (directory + `nodeos/main.py`) | repo root | `brainkernel/` | Dockerfile build context path; changing it touches compose `build.context`. |
 | `brainfoundry-node` (README H1 / prose) | `README.md` | `BrainFoundry` | Prose only — **applied in this release.** |
-| container/host paths `/home/hbar/brain`, `BRAIN_HOST_DIR` default | compose, docs | (unchanged) | Operator-specific default; not a naming issue, left alone. |
+| container/host paths `/home/brain/brain`, `BRAIN_HOST_DIR` default | compose, docs | (unchanged) | Operator-specific default; not a naming issue, left alone. |
 | repo name `brainfoundry-nous` | GitHub | (keep) | The `-nous` suffix reads as "the reference/first brain instance"; harmless, no change. |
 
 Recommended sequencing when this is picked up: ship a release where the code
