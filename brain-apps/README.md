@@ -16,8 +16,8 @@ new surfaces. An installed app:
 - declares its memory-layer access and permissions in `brain-app.yaml`,
 - is approved by the operator at install time.
 
-Manifest schema: `registry/schema/brain/app.schema.json` (in hbar.world).
-Worked example: `registry/schema/brain/app.example.yaml`.
+Manifest schema: `api/schemas/brain-app.schema.json`.
+Worked examples: the base-pack apps listed in `packs/base.json`.
 
 ## Bridge intents
 
@@ -79,7 +79,7 @@ and an optional compute spoke. Files live at `packs/<name>.json`, validated
 against `api/schemas/brain-pack.schema.json`, each with its own `version`.
 
 - `packs/base.json` is what every instance ships with: the former
-  `defaults.json` shelf plus oracle. Always installed. `defaults.json` stays as
+  `defaults.json` shelf plus ask. Always installed. `defaults.json` stays as
   a compatibility alias and is read as base only when `packs/base.json` is
   absent.
 - First run: `seed_default_apps()` reads `BRAIN_PACKS` (comma list, default

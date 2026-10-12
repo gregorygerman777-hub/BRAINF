@@ -6942,7 +6942,7 @@ def _scan_and_classify_write(
 class MemoryAppendRequest(BaseModel):
     layer: str  # episodic | semantic | procedural
     content: str
-    source: Optional[str] = None     # which app wrote this (e.g. "hbar-ink")
+    source: Optional[str] = None     # which app wrote this (e.g. "journal")
     metadata: Optional[dict] = None  # passthrough — stored alongside layer
 
 

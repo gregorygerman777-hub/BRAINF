@@ -43,7 +43,7 @@ INSTALLED_JSON = BRAIN_APPS_DIR / "installed.json"
 DEFAULTS_JSON = BRAIN_APPS_DIR / "defaults.json"
 # Packs (added 2026-09-13, unreleased 0.10.0): brain-apps/packs/<name>.json.
 # A pack is a domain bundle (apps + tools + .md + optional compute spoke).
-# The base pack is the former defaults.json shelf plus oracle and is always
+# The base pack is the former defaults.json shelf plus ask and is always
 # installed. defaults.json stays as a compatibility alias: when packs/base.json
 # is absent (older checkout), it is read as the base pack. See load_pack().
 PACKS_DIR = BRAIN_APPS_DIR / "packs"
@@ -574,7 +574,7 @@ def seed_default_apps() -> None:
     """First-run-only: pre-install the requested packs on a FRESH brain.
 
     Reads BRAIN_PACKS (default: base). base is the former defaults.json shelf
-    plus oracle; defaults.json is read as base when packs/base.json is absent.
+    plus ask; defaults.json is read as base when packs/base.json is absent.
 
     Safety contract (project_rsync_installed_json_hazard), unchanged by packs:
     - Runs at most once per brain, gated by the `defaults_seeded` marker written

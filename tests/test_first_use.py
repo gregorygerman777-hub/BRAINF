@@ -2,14 +2,14 @@
 from api.onboarding import first_use as fu
 
 
-APPS = [{"id": "poker-journal", "name": "Poker", "enabled": True},
-        {"id": "daybook", "name": "Daybook", "enabled": True, "description": "twice-daily prompt"},
+APPS = [{"id": "poker-log", "name": "Poker Log", "enabled": True},
+        {"id": "journal", "name": "Journal", "enabled": True, "description": "daily entry"},
         {"id": "off", "name": "Off", "enabled": False}]
 
 
-def test_pick_first_app_prefers_daybook_then_first_enabled():
-    assert fu.pick_first_app(APPS)["id"] == "daybook"
-    assert fu.pick_first_app(APPS[:1])["id"] == "poker-journal"
+def test_pick_first_app_prefers_journal_then_first_enabled():
+    assert fu.pick_first_app(APPS)["id"] == "journal"
+    assert fu.pick_first_app(APPS[:1])["id"] == "poker-log"
     assert fu.pick_first_app([{"id": "off", "enabled": False}]) is None
     assert fu.pick_first_app([]) is None
 
@@ -20,8 +20,8 @@ def test_fresh_brain_state():
     keys = [x["key"] for x in s["steps"]]
     assert keys == ["key", "files", "app"]
     assert s["steps"][1]["label"] == "Drop ten files (0 of 10)"
-    assert s["steps"][2]["label"] == "Open Daybook" and s["steps"][2]["href"] == "/apps/daybook"
-    assert s["first_app"]["route"] == "/apps/daybook"
+    assert s["steps"][2]["label"] == "Open Journal" and s["steps"][2]["href"] == "/apps/journal"
+    assert s["first_app"]["route"] == "/apps/journal"
 
 
 def test_progress_and_completion():

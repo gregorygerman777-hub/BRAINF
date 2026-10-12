@@ -24,7 +24,7 @@ def _pack(name, app_ids, requires=(), version="0.1.0", compute=None):
         "version": version,
         "description": f"{name} pack",
         "requires": list(requires),
-        "apps": [{"id": a, "repo_url": f"https://github.com/hbar-systems/{a}", "ref": "HEAD"} for a in app_ids],
+        "apps": [{"id": a, "repo_url": f"https://github.com/example-org/{a}", "ref": "HEAD"} for a in app_ids],
         "compute": compute,
     }
 
@@ -62,17 +62,17 @@ def _fake_install(monkeypatch, fail=()):
 
 # ── the shipped base pack ──────────────────────────────────────────────────
 
-def test_shipped_base_pack_is_valid_and_is_defaults_plus_oracle():
+def test_shipped_base_pack_is_valid_and_is_defaults_plus_ask():
     base = json.load(open(os.path.join(ROOT, "brain-apps", "packs", "base.json")))
     apps._validate_pack(base, "base")  # raises on schema failure
     defaults = json.load(open(os.path.join(ROOT, "brain-apps", "defaults.json")))
     default_ids = [a["id"] for a in defaults["apps"]]
     base_ids = [a["id"] for a in base["apps"]]
     assert base_ids[: len(default_ids)] == default_ids
-    assert base_ids[len(default_ids):] == ["oracle"]
-    oracle = next(a for a in base["apps"] if a["id"] == "oracle")
-    assert oracle["repo_url"] == "https://github.com/hbar-systems/brain-app-oracle"
-    assert oracle["ref"] == "v0.1.0"
+    assert base_ids[len(default_ids):] == ["ask"]
+    ask = next(a for a in base["apps"] if a["id"] == "ask")
+    assert ask["repo_url"] == "https://github.com/gregorygerman777-hub/brain-app-ask"
+    assert ask["ref"] == "v0.1.0"
     assert base["requires"] == []
     assert base["compute"] is None
 

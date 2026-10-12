@@ -40,7 +40,7 @@ KEY_GUIDE = [
 ]
 
 
-def pick_first_app(installed: Iterable[dict], preferred: Iterable[str] = ("daybook", "hbar-ink", "oracle")) -> Optional[dict]:
+def pick_first_app(installed: Iterable[dict], preferred: Iterable[str] = ("journal", "focus-pad", "ask")) -> Optional[dict]:
     """The app the console opens first: a preferred id when present, else the
     first enabled app in install order. None when nothing is installed."""
     apps = [a for a in installed if a.get("enabled", True) and a.get("id")]
