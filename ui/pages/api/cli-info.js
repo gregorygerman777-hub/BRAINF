@@ -12,9 +12,9 @@ export default function handler(req, res) {
   // Brain ID + public-facing endpoint. The provisioner sets BRAIN_ID at
   // deploy time; we use it to construct the public URL the CLI should hit.
   const brainId = process.env.BRAIN_ID || "your-brain";
-  // CLI endpoint is the brain's API host (no /console subdomain). Buyers
-  // type this into HBAR_ENDPOINT.
-  const endpoint = `https://${brainId}.brainfoundry.ai`;
+  // The brain's public API base (no /console subdomain); the settings page
+  // puts it in BRAIN_ENDPOINT for the curl example.
+  const endpoint = (process.env.PUBLIC_API_BASE || "http://localhost:8010").replace(/\/+$/, "");
   const apiKey = process.env.BRAIN_API_KEY || "";
 
   return res.status(200).json({

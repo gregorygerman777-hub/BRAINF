@@ -37,7 +37,7 @@ In Model 2B (automated self-serve provisioning — what most buyers use today), 
 **For full hardware sovereignty, three options:**
 
 1. **Model 2A (self-hosted)** — clone `github.com/gregorygerman777-hub/BRAINF`, run it on YOUR Hetzner account (or any cloud, or on-prem). You own the infrastructure end-to-end. We're not in the picture.
-2. **Model 3 (white-glove with project transfer)** — email `hello@example.com` subject "premium brain". Premium tier provisions on dedicated hardware AND optionally transfers the Hetzner Cloud project to your own Hetzner account at handoff. You hold the API token after that.
+2. **Model 3 (white-glove with project transfer)** — email `gregorygerman777@gmail.com` subject "premium brain". Premium tier provisions on dedicated hardware AND optionally transfers the Hetzner Cloud project to your own Hetzner account at handoff. You hold the API token after that.
 3. **Dedicated physical hardware** — operate a brain on hardware you physically own. We ship setup instructions; you handle the box.
 
 Default Model 2B is convenient but trades hardware sovereignty for setup ease. We tell you this rather than market around it.
@@ -56,7 +56,7 @@ The provisioner SSHes into your brain with an automation key during initial depl
 
 **Convenience mode (default — automation key intact):**
 - We can SSH into your brain to help if you ask (e.g. you lost your SSH key — see §5.1).
-- We will not access your brain without your written request via `hello@example.com`.
+- We will not access your brain without your written request via `gregorygerman777@gmail.com`.
 - Trust model: you trust BrainFoundry not to abuse access we technically have.
 
 **Full sovereignty mode (you remove the automation key):**
@@ -200,7 +200,7 @@ Volumes still survive. You're rolling back code only.
 
 If you can't access the brain to swap keys (old key truly lost):
 
-- **Convenience mode (you kept the automation key — see §1):** email `hello@example.com` with subject "key recovery". We'll SSH in via the automation key, issue you a new key, and confirm. **This is the only scenario where we use that automation key on your brain.**
+- **Convenience mode (you kept the automation key — see §1):** email `gregorygerman777@gmail.com` with subject "key recovery". We'll SSH in via the automation key, issue you a new key, and confirm. **This is the only scenario where we use that automation key on your brain.**
 - **Full sovereignty mode (you removed the automation key):** we cannot help. The brain is unrecoverable from outside. You'd need to re-provision a new brain at your subdomain (email us — we can spin up a fresh one) and re-ingest from your local document copies. Existing chats inside the old brain are lost.
 
 This is the sovereignty/convenience tradeoff stated bluntly. It's also why we recommend backing up your SSH key to a password manager *immediately* upon receipt — long before you decide which mode you want.
@@ -314,7 +314,7 @@ You own this brain. You can edit anything. But some changes are safer than other
 - Provision your brain (one-time, at signup) and email you the credentials.
 - Host DNS for `*.brainfoundry.ai` so your subdomain routes to your server.
 - Maintain the public template at `github.com/gregorygerman777-hub/BRAINF`. Updates flow from there to your brain when you run `update_brain.sh`.
-- Respond to support requests at `hello@example.com`.
+- Respond to support requests at `gregorygerman777@gmail.com`.
 
 ### What we don't do
 
@@ -341,10 +341,10 @@ We tell you these three things explicitly rather than pretending the access does
 
 ## 9. Questions, support, contributing
 
-- **Support / problems:** `hello@example.com` (subject prefix recommended: "support" or "security")
-- **Security disclosures:** `hello@example.com` with subject "security disclosure" — we'll acknowledge within 48 hours
+- **Support / problems:** `gregorygerman777@gmail.com` (subject prefix recommended: "support" or "security")
+- **Security disclosures:** `gregorygerman777@gmail.com` with subject "security disclosure" — we'll acknowledge within 48 hours
 - **Code contributions:** brainfoundry-nous is public. Open issues / PRs at `github.com/gregorygerman777-hub/BRAINF`.
-- **Premium / white-glove:** for fully-local + fast (dedicated GPU/big-RAM tier), email `hello@example.com` subject "premium brain"
+- **Premium / white-glove:** for fully-local + fast (dedicated GPU/big-RAM tier), email `gregorygerman777@gmail.com` subject "premium brain"
 
 ---
 

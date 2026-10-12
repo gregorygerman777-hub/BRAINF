@@ -1483,10 +1483,11 @@ function CLIPanel() {
   const apiKey = info?.api_key || ''
   const masked = apiKey ? '*'.repeat(Math.max(8, apiKey.length - 4)) + apiKey.slice(-4) : '<not configured>'
 
-  const snippet = `pip install hbar
-export HBAR_ENDPOINT="${endpoint}"
-export HBAR_API_KEY="${revealed ? apiKey : '<paste your API key here — see above>'}"
-hbar chat "hello"`
+  const snippet = `export BRAIN_ENDPOINT="${endpoint}"
+export BRAIN_API_KEY="${revealed ? apiKey : '<paste your API key here — see above>'}"
+curl -sS "$BRAIN_ENDPOINT/chat/rag" \\
+  -H "X-API-Key: $BRAIN_API_KEY" -H "Content-Type: application/json" \\
+  -d '{"messages":[{"role":"user","content":"hello"}]}'`
 
   const copyText = async (text, label) => {
     try {
@@ -1499,8 +1500,8 @@ hbar chat "hello"`
   return (
     <div style={{ paddingTop: 16 }}>
       <p style={{ color: '#6b5f52', fontSize: 13, lineHeight: 1.6, margin: '0 0 14px 0' }}>
-        Talk to your brain from your laptop terminal. One-time install, then
-        <code> hbar chat </code> anywhere.
+        Talk to your brain from your laptop terminal. Nothing to install: set the
+        two values below, then call the API with <code>curl</code>.
       </p>
 
       {/* Endpoint */}
@@ -1538,8 +1539,8 @@ hbar chat "hello"`
       </div>
 
       <p style={{ color: '#6b5f52', fontSize: 12, marginTop: 12, lineHeight: 1.55 }}>
-        <code>hbar</code> is the BrainFoundry CLI — one binary for every brain.
-        Configured with your endpoint + API key above, it talks to
+        The request goes straight to the brain's own API. With the endpoint and
+        API key above, it talks to
         <em> your </em> brain only. Your API key never leaves your server unless
         you ssh and paste it elsewhere.
       </p>

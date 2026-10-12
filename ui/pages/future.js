@@ -102,8 +102,8 @@ export default function Future() {
               github.com/gregorygerman777-hub/BRAINF
             </a>{' '}
             — fork it, file issues, or email{' '}
-            <a href="mailto:hello@example.com?subject=contribute" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
-              hello@example.com
+            <a href="mailto:gregorygerman777@gmail.com?subject=contribute" style={{ color: '#c9a96e', textDecoration: 'underline' }}>
+              gregorygerman777@gmail.com
             </a>
             . Your friction is our roadmap.
           </p>

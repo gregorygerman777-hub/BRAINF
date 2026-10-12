@@ -46,6 +46,7 @@ services:
       - REDIS_URL=redis://redis:6379/0
       - DEV_ENABLE_MEMORY_APPEND=0
       - BRAIN_ID=${BRAIN_ID:-brainf-01}
+      - PUBLIC_API_BASE=${PUBLIC_API_BASE:-http://localhost:8010}
       - BRAIN_NAME=${BRAIN_NAME:-BRAINF}
       - BRAIN_SYMBOL=${BRAIN_SYMBOL:-🧠}
       - BRAIN_OWNER=${BRAIN_OWNER}
@@ -191,6 +192,7 @@ services:
       NODEOS_INTERNAL_KEY: "${NODEOS_INTERNAL_KEY}"
       BRAIN_API_KEY: "${BRAIN_API_KEY}"
       BRAIN_ID: "${BRAIN_ID:-brainf-01}"
+      PUBLIC_API_BASE: "${PUBLIC_API_BASE:-http://localhost:8010}"
       NEXT_PUBLIC_BRAIN_NAME: "${BRAIN_NAME:-BRAINF}"
     depends_on:
       - api
